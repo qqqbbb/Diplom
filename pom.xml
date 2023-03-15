@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.skypro</groupId>
-    <artifactId>homework</artifactId>
+    <artifactId>Team2Diplom</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>homework</name>
-    <description>homework</description>
+    <name>Team2Diplom</name>
+    <description>SkyPro java course graduation work</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -26,9 +26,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,10 +58,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
+
                     </excludes>
                 </configuration>
             </plugin>

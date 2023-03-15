@@ -1,4 +1,4 @@
-package ru.skypro.homework.service.impl;
+package ru.skypro.diplom.service.impl;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,9 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.RegisterReq;
-import ru.skypro.homework.dto.Role;
-import ru.skypro.homework.service.AuthService;
+import ru.skypro.diplom.dto.RegisterReq;
+import ru.skypro.diplom.enums.Role;
+import ru.skypro.diplom.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -27,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
         if (!manager.userExists(userName)) {
             return false;
         }
+
         UserDetails userDetails = manager.loadUserByUsername(userName);
         String encryptedPassword = userDetails.getPassword();
         String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
