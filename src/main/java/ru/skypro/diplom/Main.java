@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-        LoggerFactory.getLogger(Main.class).info("!  started  !");
+        LoggerFactory.getLogger(Main.class).info("!  started  !!!");
     }
 
 }
