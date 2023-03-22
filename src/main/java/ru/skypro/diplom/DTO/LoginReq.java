@@ -1,4 +1,4 @@
-package ru.skypro.diplom.dto;
+package ru.skypro.diplom.DTO;
 
 
 import java.util.Objects;

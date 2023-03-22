@@ -1,4 +1,4 @@
-package ru.skypro.diplom.dto;
+package ru.skypro.diplom.DTO;
 
 
 import ru.skypro.diplom.enums.Role;

@@ -1,9 +1,10 @@
-package ru.skypro.diplom.dto;
+package ru.skypro.diplom.DTO;
 
 import ru.skypro.diplom.model.Ads;
+import java.util.List;
 
 public class ResponseWrapperAds {
     private int count;
-    private Ads[] results;
+    private List<Ads> results;
 
 }

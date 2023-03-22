@@ -1,4 +1,4 @@
-package ru.skypro.diplom.dto;
+package ru.skypro.diplom.DTO;
 
 public class NewPassword {
     public String currentPassword;

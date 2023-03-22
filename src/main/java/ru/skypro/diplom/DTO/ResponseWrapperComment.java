@@ -1,8 +1,10 @@
-package ru.skypro.diplom.dto;
+package ru.skypro.diplom.DTO;
 
 import ru.skypro.diplom.model.Comment;
 
+import java.util.List;
+
 public class ResponseWrapperComment {
     private int count;
-    private Comment[] results;
+    private List<Comment> results;
 }
