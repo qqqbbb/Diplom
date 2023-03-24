@@ -5,11 +5,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.model.User;
+import ru.skypro.diplom.service.UserService;
 
 @RestController
 @RequestMapping("users")
 @CrossOrigin(value = "http://localhost:3000")
 public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword ) {
@@ -34,4 +41,11 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping ("/testSaving")
+    public ResponseEntity<?> testSavingUser(@RequestBody UserDTO userDTO ) {
+
+        return ResponseEntity.ok(userService.testSavingUser(userDTO));
+    }
+
 }

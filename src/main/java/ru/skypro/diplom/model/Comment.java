@@ -1,8 +1,9 @@
 package ru.skypro.diplom.model;
 
 public class Comment {
+
+    private long id;
     private int author;
-    private int pk;
     private String createdAt;
     private String text;
 }

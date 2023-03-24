@@ -1,13 +1,6 @@
-package ru.skypro.diplom.model;
+package ru.skypro.diplom.DTO;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "Users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Integer id;
     private String firstName;
     private String lastName;
@@ -17,10 +10,7 @@ public class User {
     private String city;
     private String image;
 
-    public User() {
-    }
-
-    public User(Integer id, String firstName, String lastName, String email, String phone, String regDate, String city) {
+    public UserDTO(Integer id, String firstName, String lastName, String email, String phone, String regDate, String city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +18,19 @@ public class User {
         this.phone = phone;
         this.regDate = regDate;
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", regDate='" + regDate + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 
     public Integer getId() {

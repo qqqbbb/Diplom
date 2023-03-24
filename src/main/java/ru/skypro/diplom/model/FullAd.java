@@ -1,13 +1,14 @@
 package ru.skypro.diplom.model;
 
-public class FullAds {
+public class FullAd {
+    private long id;
     private String title;
     private String authorFirstName;
     private String authorLastName;
     private String description;
     private String email;
     private String phone;
-    private int pk;
+
     private int price;
     private String[] image;
 
