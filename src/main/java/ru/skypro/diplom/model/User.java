@@ -1,8 +1,9 @@
 package ru.skypro.diplom.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-@Entity
+@Entity()
 @Table(name = "Users")
 public class User {
 
@@ -13,15 +14,15 @@ public class User {
     private String lastName;
     private String email;
     private String phone;
-    private String regDate;
+    private LocalDate regDate;
     private String city;
-    private String image;
+    @OneToOne
+    private Avatar avatar;
 
-    public User() {
+    protected User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String phone, String regDate, String city) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String phone, LocalDate regDate, String city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -50,7 +51,7 @@ public class User {
         return phone;
     }
 
-    public String getRegDate() {
+    public LocalDate getRegDate() {
         return regDate;
     }
 
@@ -58,7 +59,7 @@ public class User {
         return city;
     }
 
-    public String getImage() {
-        return image;
+    public Avatar getAvatar() {
+        return avatar;
     }
 }

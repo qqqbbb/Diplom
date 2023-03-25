@@ -1,7 +1,6 @@
 package ru.skypro.diplom.DTO;
 
 import ru.skypro.diplom.model.Comment;
-
 import java.util.List;
 
 public class ResponseWrapperComment {

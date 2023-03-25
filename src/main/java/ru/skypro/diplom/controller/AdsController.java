@@ -3,7 +3,7 @@ package ru.skypro.diplom.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.diplom.DTO.CreateAds;
+import ru.skypro.diplom.DTO.CreateAd;
 import ru.skypro.diplom.model.Comment;
 
 @RestController
@@ -18,7 +18,7 @@ public class AdsController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addAds(@RequestPart(value = "properties") CreateAds createAds, @RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<?> addAds(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) {
 
         return ResponseEntity.ok().build();
     }
@@ -54,7 +54,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAds(@PathVariable int id, @RequestBody CreateAds createAds) {
+    public ResponseEntity<?> updateAds(@PathVariable int id, @RequestBody CreateAd createAd) {
 
         return ResponseEntity.ok().build();
     }
