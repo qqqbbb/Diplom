@@ -1,6 +1,6 @@
 package ru.skypro.diplom.DTO;
 
-public class CreateAd {
+public class CreateAds {
 
     private String title;
     private String description;

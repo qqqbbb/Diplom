@@ -42,10 +42,10 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping ("/testSaving")
-//    public ResponseEntity<?> testSavingUser(@RequestBody UserDTO userDTO ) {
-//
-//        return ResponseEntity.ok(userService.testSavingUser(userDTO));
-//    }
+    @PostMapping ("/addUser")
+    public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO ) {
+
+        return ResponseEntity.ok(userService.addUser(userDTO));
+    }
 
 }

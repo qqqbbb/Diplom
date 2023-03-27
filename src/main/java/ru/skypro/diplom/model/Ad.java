@@ -22,10 +22,13 @@ public class Ad {
     public Ad() {
     }
 
-    public Ad(String title, int price, User user) {
+    public Ad(String title, String description, int price, User user, String phone, String email) {
         this.title = title;
+        this.description = description;
         this.price = price;
         this.user = user;
+        this.phone = phone;
+        this.email = email;
     }
 
     public int getId() {

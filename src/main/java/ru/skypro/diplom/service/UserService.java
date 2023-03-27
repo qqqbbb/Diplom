@@ -48,8 +48,8 @@ public class UserService {
         return userToDTO(user);
     }
 
-//    public User testSavingUser (UserDTO userDTO){
-//        log.info("testSavingUser " + userDTO);
-//        return userRepository.save(dtoToUser(userDTO));
-//    }
+    public User addUser (UserDTO userDTO){
+        log.info("AddUser " + userDTO);
+        return userRepository.save(dtoToUser(userDTO));
+    }
 }

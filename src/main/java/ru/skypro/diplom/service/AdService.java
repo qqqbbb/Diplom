@@ -2,7 +2,8 @@ package ru.skypro.diplom.service;
 
 import org.slf4j.*;
 import org.springframework.stereotype.Service;
-import ru.skypro.diplom.DTO.AdDTO;
+import ru.skypro.diplom.DTO.FullAds;
+import ru.skypro.diplom.DTO.Ads;
 import ru.skypro.diplom.Exceptions.AdNotFoundException;
 import ru.skypro.diplom.Exceptions.UserNotFoundException;
 import ru.skypro.diplom.model.*;
@@ -24,26 +25,31 @@ public class AdService {
         this.userRepository = userRepository;
     }
 
-    public Ad dtoToAd(AdDTO adDTO) {
-        Optional<User> optionalUser = userRepository.findById(adDTO.getAuthorId());
-        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
-        return new Ad(adDTO.getTitle(), adDTO.getPrice(), user);
+//    public Ad dtoToAd(FullAds fullAds) {
+//        Optional<User> optionalUser = userRepository.findById(fullAds.get());
+//        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+//        return new Ad(adShort.getTitle(), adShort. adDTO.getPrice(), user);
+//    }
+
+    public Ads adToDTO(Ad ad) {
+        return new Ads(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice());
     }
 
-    public AdDTO adToDTO(Ad ad) {
-        return new AdDTO(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice());
-    }
-
-    public List<AdDTO> getAllAds() {
+    public List<Ads> getAllAds() {
         List<Ad> ads = adRepository.findAll();
-        List<AdDTO> dtos = new ArrayList<>();
+        List<Ads> dtos = new ArrayList<>();
         for (Ad ad: ads)
             dtos.add(adToDTO(ad));
 
         return dtos;
     }
 
-    public AdDTO getAd(int id) {
+//    public AdDTO addAd(CreateAd createAd, MultipartFile file) throws IOException {
+//
+//
+//    }
+
+    public Ads getAd(int id) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         return adToDTO(ad);

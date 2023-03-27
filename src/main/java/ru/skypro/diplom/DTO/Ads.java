@@ -1,13 +1,13 @@
 package ru.skypro.diplom.DTO;
 
-public class AdDTO {
+public class Ads {
     private int id;
     private String title;
     private int authorId;
     private int price;
     private String image;
 
-    public AdDTO(int id, String title, int authorId, int price) {
+    public Ads(int id, String title, int authorId, int price) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
