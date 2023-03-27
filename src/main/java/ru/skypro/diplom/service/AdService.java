@@ -2,10 +2,8 @@ package ru.skypro.diplom.service;
 
 import org.slf4j.*;
 import org.springframework.stereotype.Service;
-import ru.skypro.diplom.DTO.FullAds;
-import ru.skypro.diplom.DTO.Ads;
-import ru.skypro.diplom.Exceptions.AdNotFoundException;
-import ru.skypro.diplom.Exceptions.UserNotFoundException;
+import ru.skypro.diplom.DTO.*;
+import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.*;
 
@@ -35,13 +33,9 @@ public class AdService {
         return new Ads(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice());
     }
 
-    public List<Ads> getAllAds() {
+    public ResponseWrapperAds getAllAds() {
         List<Ad> ads = adRepository.findAll();
-        List<Ads> dtos = new ArrayList<>();
-        for (Ad ad: ads)
-            dtos.add(adToDTO(ad));
-
-        return dtos;
+        return new ResponseWrapperAds(ads.size(), ads);
     }
 
 //    public AdDTO addAd(CreateAd createAd, MultipartFile file) throws IOException {

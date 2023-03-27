@@ -1,5 +1,7 @@
 package ru.skypro.diplom.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,8 +15,8 @@ import ru.skypro.diplom.enums.Role;
 public class AuthService {
 
     private final UserDetailsManager manager;
-
     private final PasswordEncoder encoder;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AuthService(UserDetailsManager manager) {
         this.manager = manager;

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.Ads;
 import ru.skypro.diplom.DTO.CreateAds;
+import ru.skypro.diplom.DTO.ResponseWrapperAds;
 import ru.skypro.diplom.model.Comment;
 import ru.skypro.diplom.service.AdService;
 
@@ -28,9 +29,9 @@ public class AdsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ads>> getAllAds() {
-        List<Ads> ads = adService.getAllAds();
-        return ResponseEntity.ok(ads);
+    public ResponseEntity<ResponseWrapperAds> getAllAds() {
+        ResponseWrapperAds rwa = adService.getAllAds();
+        return ResponseEntity.ok(rwa);
     }
 
     @GetMapping("/{id}")

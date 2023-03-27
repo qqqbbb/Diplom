@@ -3,11 +3,13 @@ package ru.skypro.diplom.service;
 import org.slf4j.*;
 import org.springframework.stereotype.Service;
 import ru.skypro.diplom.DTO.UserDTO;
+import ru.skypro.diplom.Exceptions.UserNotFoundException;
 import ru.skypro.diplom.model.User;
 import ru.skypro.diplom.repository.UserRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -51,5 +53,11 @@ public class UserService {
     public User addUser (UserDTO userDTO){
         log.info("AddUser " + userDTO);
         return userRepository.save(dtoToUser(userDTO));
+    }
+
+    public User getCurrentUser (){
+        log.info(" getCurrentUser " );
+        Optional<User> optionalUser = userRepository.findById(1);
+        return optionalUser.orElseThrow(() -> new UserNotFoundException());
     }
 }
