@@ -26,18 +26,18 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getUser() {
-
+//        userService.getUser();
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping ("/me")
-    public ResponseEntity<?> updateUser(@RequestBody User user ) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO ) {
+        UserDTO updatedDTO = userService.updateUser(userDTO);
+        return ResponseEntity.ok(updatedDTO);
     }
 
     @PatchMapping ("/me/image")
-    public ResponseEntity<?> updateUserImage(@RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<?> updateUserAvatar(@RequestPart(value = "image") MultipartFile file) {
 
         return ResponseEntity.ok().build();
     }

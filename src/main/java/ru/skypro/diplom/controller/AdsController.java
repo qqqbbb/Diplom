@@ -3,22 +3,32 @@ package ru.skypro.diplom.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.diplom.DTO.AdDTO;
 import ru.skypro.diplom.DTO.CreateAd;
 import ru.skypro.diplom.model.Comment;
+import ru.skypro.diplom.service.AdService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("Ads")
 @CrossOrigin(value = "http://localhost:3000")
 public class AdsController {
 
-    @GetMapping
-    public ResponseEntity<?> getAllAds() {
+    private final AdService adService;
 
-        return ResponseEntity.ok().build();
+    public AdsController(AdService adService) {
+        this.adService = adService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AdDTO>> getAllAds() {
+        List<AdDTO> ads = adService.getAllAds();
+        return ResponseEntity.ok(ads);
     }
 
     @PostMapping
-    public ResponseEntity<?> addAds(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<?> addAd(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) {
 
         return ResponseEntity.ok().build();
     }
@@ -30,7 +40,7 @@ public class AdsController {
     }
 
     @GetMapping("/{adPK}/comments")
-    public ResponseEntity<?> getComments(@PathVariable String adPK) {
+    public ResponseEntity<?> getComments(@PathVariable String adId) {
 
         return ResponseEntity.ok().build();
     }
@@ -42,9 +52,8 @@ public class AdsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAds(@PathVariable int id) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AdDTO> getAd(@PathVariable int id) {
+        return ResponseEntity.ok(adService.getAd(id));
     }
 
     @DeleteMapping("/{id}")

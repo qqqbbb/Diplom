@@ -8,11 +8,14 @@ import java.util.Objects;
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private String title;
+    private String description;
     private int price;
     @OneToOne
     private User user;
+    private String phone;
+    private String email;
     @OneToOne
     private Image image;
 
@@ -25,7 +28,7 @@ public class Ad {
         this.user = user;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

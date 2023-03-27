@@ -3,11 +3,12 @@ package ru.skypro.diplom.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Images")
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String filePath;
     private long fileSize;
     private String mediaType;
@@ -16,7 +17,7 @@ public class Image {
     public Image() {
     }
 
-    public Image(Long id, String filePath, long fileSize, String mediaType, byte[] data) {
+    public Image(int id, String filePath, long fileSize, String mediaType, byte[] data) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -24,7 +25,7 @@ public class Image {
         this.data = data;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

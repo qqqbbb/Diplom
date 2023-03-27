@@ -3,7 +3,7 @@ package ru.skypro.diplom.DTO;
 import ru.skypro.diplom.model.Image;
 
 public class FullAd {
-    private long id;
+    private int id;
     private String title;
     private String authorFirstName;
     private String authorLastName;
@@ -13,7 +13,7 @@ public class FullAd {
     private int price;
     private String image;
 
-    public FullAd(long id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
+    public FullAd(int id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
         this.id = id;
         this.title = title;
         this.authorFirstName = authorFirstName;
@@ -25,8 +25,7 @@ public class FullAd {
         this.image = image;
     }
 
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 

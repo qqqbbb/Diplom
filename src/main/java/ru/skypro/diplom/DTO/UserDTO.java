@@ -1,28 +1,22 @@
-package ru.skypro.diplom.model;
+package ru.skypro.diplom.DTO;
 
-import javax.persistence.*;
+import ru.skypro.diplom.model.Avatar;
+
+
 import java.time.LocalDate;
 
-@Entity()
-@Table(name = "Users")
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
-    private LocalDate regDate;
+    private String regDate;
     private String city;
-    @OneToOne
-    private Avatar avatar;
+    private String avatar;
 
-    protected User() {
-    }
-
-    public User(int id, String firstName, String lastName, String email, String phone, LocalDate regDate, String city) {
+    public UserDTO(int id, String firstName, String lastName, String email, String phone, String regDate, String city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,7 +46,7 @@ public class User {
         return phone;
     }
 
-    public LocalDate getRegDate() {
+    public String getRegDate() {
         return regDate;
     }
 
@@ -60,7 +54,7 @@ public class User {
         return city;
     }
 
-    public Avatar getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 }

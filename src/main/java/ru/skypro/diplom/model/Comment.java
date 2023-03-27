@@ -1,5 +1,7 @@
 package ru.skypro.diplom.model;
 
+import net.bytebuddy.implementation.bind.annotation.This;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -10,7 +12,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private LocalDate creationDate;
     private String text;
     @OneToOne
@@ -21,7 +23,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(LocalDate creationDate, String text, User user, Ad ad) {
+    public Comment(int id, LocalDate creationDate, String text, User user, Ad ad) {
+        this.id = id;
         this.creationDate = creationDate;
         this.text = text;
         this.user = user;
@@ -50,5 +53,25 @@ public class Comment {
     @Override
     public int hashCode() {
         return Objects.hash(id, creationDate, text, user, ad);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Ad getAd() {
+        return ad;
     }
 }

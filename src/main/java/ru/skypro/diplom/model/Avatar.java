@@ -8,7 +8,7 @@ import java.util.*;
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String filePath;
     private long fileSize;
     private String mediaType;
@@ -24,7 +24,7 @@ public class Avatar {
         this.data = data;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -49,7 +49,7 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return getFileSize() == avatar.getFileSize() && getId().equals(avatar.getId()) && getMediaType().equals(avatar.getMediaType()) && Arrays.equals(getData(), avatar.getData());
+        return getFileSize() == avatar.getFileSize() && getId() == avatar.getId() && getMediaType().equals(avatar.getMediaType()) && Arrays.equals(getData(), avatar.getData());
     }
 
     @Override
