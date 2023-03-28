@@ -17,8 +17,7 @@ public class Image {
     public Image() {
     }
 
-    public Image(int id, String filePath, long fileSize, String mediaType, byte[] data) {
-        this.id = id;
+    public Image( String filePath, long fileSize, String mediaType, byte[] data) {
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;

@@ -25,6 +25,7 @@ public class AdsController {
     @PostMapping
     public ResponseEntity<Ads> addAd(@RequestPart(value = "properties") CreateAds createAds, @RequestPart(value = "image") MultipartFile file) {
 
+
         return ResponseEntity.ok().build();
     }
 

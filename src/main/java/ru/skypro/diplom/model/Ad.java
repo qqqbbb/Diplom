@@ -39,6 +39,10 @@ public class Ad {
         return title;
     }
 
+    public String getDescriptione() {
+        return description;
+    }
+
     public int getPrice() {
         return price;
     }

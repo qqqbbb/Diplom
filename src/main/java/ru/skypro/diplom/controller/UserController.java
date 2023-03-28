@@ -1,6 +1,6 @@
 package ru.skypro.diplom.controller;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
@@ -37,15 +37,8 @@ public class UserController {
         return ResponseEntity.ok(updatedDTO);
     }
 
-    @PatchMapping ("/me/image")
-    public ResponseEntity<?> updateUserAvatar(@RequestPart(value = "image") MultipartFile file) throws IOException {
-        if (file.getSize() > 1024 * 1024)
-            return ResponseEntity.badRequest().body("FIle is too big");
-
-        String contentType = file.getContentType();
-        System.out.println("upload avatar contentType " + contentType);
-        if (contentType == null || !contentType.contains("image"))
-            return ResponseEntity.badRequest().body("Only images can be uploaded");
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity updateUserAvatar(@RequestPart(value = "image") MultipartFile file) throws IOException {
 
         avatarService.uploadAvatar(file);
         return ResponseEntity.ok().build();
@@ -56,5 +49,11 @@ public class UserController {
 
         return ResponseEntity.ok(userService.addUser(userDTO));
     }
+
+//    @GetMapping ("/getAvatar")
+//    public ResponseEntity<byte[]> getAvatar() {
+//
+//        return avatarService.downloadAvatar(userService.getCurrentUser());
+//    }
 
 }
