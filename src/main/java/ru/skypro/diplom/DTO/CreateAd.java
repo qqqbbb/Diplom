@@ -1,15 +1,15 @@
 package ru.skypro.diplom.DTO;
 
-public class CreateAds {
+public class CreateAd {
 
     private String title;
     private String description;
     private int price;
 
-    public CreateAds() {
+    public CreateAd() {
     }
 
-    public CreateAds(String title, String description, int price) {
+    public CreateAd(String title, String description, int price) {
         this.title = title;
         this.description = description;
         this.price = price;

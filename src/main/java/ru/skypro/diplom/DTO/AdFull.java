@@ -1,6 +1,6 @@
 package ru.skypro.diplom.DTO;
 
-public class FullAds {
+public class AdFull {
     private int id;
     private String title;
     private String authorFirstName;
@@ -11,7 +11,7 @@ public class FullAds {
     private int price;
     private String image;
 
-    public FullAds(int id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
+    public AdFull(int id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
         this.id = id;
         this.title = title;
         this.authorFirstName = authorFirstName;

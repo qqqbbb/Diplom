@@ -29,15 +29,15 @@ public class AdService {
         this.imageService = imageService;
     }
 
-    public FullAds getFullAd(Ad ad) {
+    public AdFull getFullAd(Ad ad) {
         log.info("getFullAd");
         User user = userService.getCurrentUser();
         String image = "Ads/" + ad.getId() + "/image";
-        return new FullAds(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getEmail(), user.getPhone(), ad.getPrice(), image);
+        return new AdFull(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getEmail(), user.getPhone(), ad.getPrice(), image);
     }
 
-    public Ads adToDTO(Ad ad) {
-        return new Ads(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice());
+    public AdPreview adToDTO(Ad ad) {
+        return new AdPreview(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice());
     }
 
     public ResponseWrapperAds getAllAds() {
@@ -46,7 +46,7 @@ public class AdService {
         return new ResponseWrapperAds(ads.size(), ads);
     }
 
-    public FullAds addAd(CreateAds createAd, MultipartFile file) throws IOException {
+    public AdFull addAd(CreateAd createAd, MultipartFile file) throws IOException {
         log.info("addAd");
         User user = userService.getCurrentUser();
         Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user, user.getPhone(), user.getEmail());
@@ -54,7 +54,7 @@ public class AdService {
         return getFullAd(ad);
     }
 
-    public Ads getAd(int id) {
+    public AdPreview getAd(int id) {
         log.info("getAd " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());

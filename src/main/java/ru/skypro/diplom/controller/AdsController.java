@@ -27,7 +27,7 @@ public class AdsController {
     }
 
     @PostMapping
-    public ResponseEntity<FullAds> addAd(@RequestPart(value = "properties") CreateAds createAds, @RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<AdFull> addAd(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) {
 
 
         return ResponseEntity.ok().build();
@@ -40,7 +40,7 @@ public class AdsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ads> getAd(@PathVariable int id) {
+    public ResponseEntity<AdPreview> getAd(@PathVariable int id) {
         return ResponseEntity.ok(adService.getAd(id));
     }
 
@@ -51,7 +51,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAds createAds) {
+    public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd) {
 
         return ResponseEntity.ok().build();
     }
