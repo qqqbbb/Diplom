@@ -2,14 +2,19 @@ package ru.skypro.diplom.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import ru.skypro.diplom.DTO.CommentDTO;
+import ru.skypro.diplom.DTO.ResponseWrapperComment;
 import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CommentService {
 
     public final CommentRepository commentRepository;
@@ -44,5 +49,13 @@ public class CommentService {
         Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
         LocalDate localDate = parseDate(dto.getCreationDate());
         return new Comment(dto.getId(), localDate, dto.getText(), user, ad);
+    }
+
+    public ResponseEntity<ResponseWrapperComment> getComments(int adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
+        List<Comment> comments = commentRepository.findAllByAd(ad);
+        ResponseWrapperComment rwc = new ResponseWrapperComment(comments.size(), comments);
+        return ResponseEntity.ok(rwc);
     }
 }

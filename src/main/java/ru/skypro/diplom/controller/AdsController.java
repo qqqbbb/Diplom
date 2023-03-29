@@ -3,12 +3,12 @@ package ru.skypro.diplom.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.diplom.DTO.Ads;
-import ru.skypro.diplom.DTO.CreateAds;
-import ru.skypro.diplom.DTO.ResponseWrapperAds;
-import ru.skypro.diplom.model.Comment;
+import ru.skypro.diplom.DTO.*;
+//import ru.skypro.diplom.model.Comment;
 import ru.skypro.diplom.service.AdService;
+import ru.skypro.diplom.service.CommentService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,13 +17,15 @@ import java.util.List;
 public class AdsController {
 
     private final AdService adService;
+    private final CommentService commentService;
 
-    public AdsController(AdService adService) {
+    public AdsController(AdService adService, CommentService commentService) {
         this.adService = adService;
+        this.commentService = commentService;
     }
 
     @PostMapping
-    public ResponseEntity<Ads> addAd(@RequestPart(value = "properties") CreateAds createAds, @RequestPart(value = "image") MultipartFile file) {
+    public ResponseEntity<FullAds> addAd(@RequestPart(value = "properties") CreateAds createAds, @RequestPart(value = "image") MultipartFile file) {
 
 
         return ResponseEntity.ok().build();
@@ -41,8 +43,8 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable int id) {
-
+    public ResponseEntity<?> deleteAd(@PathVariable int id) {
+        adService.deleteAd(id);
         return ResponseEntity.ok().build();
     }
 
@@ -53,44 +55,42 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getAds() {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResponseWrapperAds> getAds() {
+        return adService.getCurrentUserAds();
     }
 
     @PatchMapping("/{id}/image")
-    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file) {
-
+    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file) throws IOException {
+        adService.updateAdImage(id, file);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{adId}/comments")
-    public ResponseEntity<?> getComments(@PathVariable String adId) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ResponseWrapperComment> getComments(@PathVariable int adId) {
+        return commentService.getComments(adId);
     }
 
     @PostMapping("/{adId}/comments")
-    public ResponseEntity<?> addComments(@RequestBody Comment comment, @PathVariable String adId) {
+    public ResponseEntity<?> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId) {
 
         return ResponseEntity.ok().build();
     }
 
 
     @GetMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> getComments(@PathVariable int commentId, @PathVariable String adId) {
+    public ResponseEntity<?> getComments(@PathVariable int commentId, @PathVariable int adId) {
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> deleteComments(@PathVariable int commentId, @PathVariable String adId) {
+    public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId) {
 
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> updateComments(@PathVariable int commentId, @PathVariable String adId, @RequestBody Comment comment) {
+    public ResponseEntity<?> updateComment(@PathVariable int commentId, @PathVariable int adId, @RequestBody CommentDTO commentDTO) {
 
         return ResponseEntity.ok().build();
     }

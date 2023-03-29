@@ -1,7 +1,5 @@
 package ru.skypro.diplom.model;
 
-import net.bytebuddy.implementation.bind.annotation.This;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
