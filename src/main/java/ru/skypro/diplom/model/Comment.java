@@ -80,4 +80,9 @@ public class Comment {
 
         return ad;
     }
+
+    public void setAd(Ad ad) {
+        this.ad = ad;
+    }
+
 }

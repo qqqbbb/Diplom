@@ -1,6 +1,6 @@
 package ru.skypro.diplom.model;
 
-import ru.skypro.diplom.Exceptions.UserNotFoundException;
+import ru.skypro.diplom.Exceptions.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -57,6 +57,9 @@ public class Ad {
     }
 
     public Image getImage() {
+        if (image == null)
+            throw new ImageNotFoundException();
+
         return image;
     }
 

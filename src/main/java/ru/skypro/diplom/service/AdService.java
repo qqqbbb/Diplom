@@ -32,9 +32,8 @@ public class AdService {
     public FullAds getFullAd(Ad ad) {
         log.info("getFullAd");
         User user = userService.getCurrentUser();
-        // image???
-        FullAds fullAds = new FullAds(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getEmail(), user.getPhone(), ad.getPrice(), ad.getImage().getFilePath());
-        return fullAds;
+        String image = "Ads/" + ad.getId() + "/image";
+        return new FullAds(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getEmail(), user.getPhone(), ad.getPrice(), image);
     }
 
     public Ads adToDTO(Ad ad) {
@@ -83,5 +82,11 @@ public class AdService {
         return ResponseEntity.ok().build();
     }
 
+    public ResponseEntity<byte[]> getImage(int id) {
+        log.info("getImage " + id);
+        Optional<Ad> optionalAd = adRepository.findById(id);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        return imageService.downloadImage(ad);
+    }
 
 }

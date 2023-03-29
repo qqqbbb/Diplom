@@ -4,11 +4,12 @@ import org.slf4j.*;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.diplom.Exceptions.AvatarNotFoundException;
+import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.ImageRepository;
 
 import java.io.*;
+import java.util.Optional;
 
 
 @Service
@@ -34,20 +35,26 @@ public class ImageService {
     public Image getImage(Ad ad) {
         log.info("getImage " );
         Image image = ad.getImage();
-        if (image == null)
-            throw new AvatarNotFoundException();
+        return image;
+    }
 
+    public Image getImage(int id) {
+        log.info("getImage " + id );
+        Optional<Image> optionalImage = imageRepository.findById(id);
+        Image image = optionalImage.orElseThrow(()->new ImageNotFoundException());
         return image;
     }
 
     public ResponseEntity<byte[]> downloadImage(Ad ad) {
-        log.info("downloadImageFromDB " + ad.getTitle());
+        log.info("downloadImage " + ad.getTitle());
         Image image = ad.getImage();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(image.getMediaType()));
         headers.setContentLength(image.getData().length);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(image.getData());
     }
+
+
 
 
 }

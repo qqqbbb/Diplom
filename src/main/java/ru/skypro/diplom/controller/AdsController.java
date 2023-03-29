@@ -7,9 +7,9 @@ import ru.skypro.diplom.DTO.*;
 //import ru.skypro.diplom.model.Comment;
 import ru.skypro.diplom.service.AdService;
 import ru.skypro.diplom.service.CommentService;
+import ru.skypro.diplom.service.ImageService;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping("Ads")
@@ -18,10 +18,12 @@ public class AdsController {
 
     private final AdService adService;
     private final CommentService commentService;
+    private final ImageService imageService;
 
-    public AdsController(AdService adService, CommentService commentService) {
+    public AdsController(AdService adService, CommentService commentService, ImageService imageService) {
         this.adService = adService;
         this.commentService = commentService;
+        this.imageService = imageService;
     }
 
     @PostMapping
@@ -59,6 +61,12 @@ public class AdsController {
         return adService.getCurrentUserAds();
     }
 
+    @GetMapping("/{id}/image")
+    public ResponseEntity<byte[]> getAdImage(@PathVariable int id) throws IOException {
+        adService.getImage(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PatchMapping("/{id}/image")
     public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file) throws IOException {
         adService.updateAdImage(id, file);
@@ -72,25 +80,25 @@ public class AdsController {
 
     @PostMapping("/{adId}/comments")
     public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId) {
-        commentService.getComments(adId);
+        commentService.addComment(commentDTO, adId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> getComment(@PathVariable int adId, @PathVariable int commentId) {
+    public ResponseEntity<CommentDTO> getComment(@PathVariable int adId, @PathVariable int commentId) {
         return commentService.getComment(adId, commentId);
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId) {
-
+        commentService.deleteComment(adId, commentId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable int commentId, @PathVariable int adId, @RequestBody CommentDTO commentDTO) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable int commentId, @PathVariable int adId, @RequestBody CommentDTO commentDTO) {
+        CommentDTO commentDTO1 = commentService.updateComment(commentId, adId, commentDTO);
+        return ResponseEntity.ok(commentDTO1);
     }
 
 }

@@ -57,6 +57,26 @@ public class CommentService {
         return new CommentDTO(comment.getId(), comment.getCreationDate().toString(), comment.getText(), user.getId(), ad.getId());
     }
 
+    public CommentDTO addComment(CommentDTO commentDTO, int adId) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
+        Comment comment = dtoToComment(commentDTO);
+        comment.setAd(ad);
+        commentRepository.save(comment);
+        return commentDTO;
+    }
+
+    public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        Comment comment = optionalComment.orElseThrow(()->new CommentNotFoundException());
+        comment = dtoToComment(commentDTO);
+        comment.setAd(ad);
+        commentRepository.save(comment);
+        return commentDTO;
+    }
+
     public ResponseEntity<ResponseWrapperComment> getComments(int adId) {
         log.info("getComments");
         Optional<Ad> optionalAd = adRepository.findById(adId);
@@ -69,7 +89,7 @@ public class CommentService {
     public ResponseEntity<CommentDTO> getComment(int adId, int commentId) {
         log.info("getComment ");
         Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         List<Comment> comments = commentRepository.findAllByAd(ad);
         for (Comment c : comments) {
             if (c.getId() == commentId)
@@ -78,5 +98,8 @@ public class CommentService {
         throw new CommentNotFoundException();
     }
 
+    public void deleteComment(int adId, int commentId) {
+        commentRepository.deleteById(commentId);
+    }
 
 }
