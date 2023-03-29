@@ -1,5 +1,7 @@
 package ru.skypro.diplom.model;
 
+import ru.skypro.diplom.Exceptions.UserNotFoundException;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -48,6 +50,9 @@ public class Ad {
     }
 
     public User getUser() {
+        if (user == null)
+            throw new UserNotFoundException();
+
         return user;
     }
 

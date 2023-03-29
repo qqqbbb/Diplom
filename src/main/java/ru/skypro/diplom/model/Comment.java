@@ -1,5 +1,7 @@
 package ru.skypro.diplom.model;
 
+import ru.skypro.diplom.Exceptions.*;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -66,10 +68,16 @@ public class Comment {
     }
 
     public User getUser() {
+        if (user == null)
+            throw new UserNotFoundException();
+
         return user;
     }
 
     public Ad getAd() {
+        if (ad == null)
+            throw new AdNotFoundException();
+
         return ad;
     }
 }

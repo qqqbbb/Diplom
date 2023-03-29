@@ -51,11 +51,32 @@ public class CommentService {
         return new Comment(dto.getId(), localDate, dto.getText(), user, ad);
     }
 
+    public CommentDTO commentToDTO(Comment comment) {
+        User user = comment.getUser();
+        Ad ad = comment.getAd();
+        return new CommentDTO(comment.getId(), comment.getCreationDate().toString(), comment.getText(), user.getId(), ad.getId());
+    }
+
     public ResponseEntity<ResponseWrapperComment> getComments(int adId) {
+        log.info("getComments");
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
         List<Comment> comments = commentRepository.findAllByAd(ad);
         ResponseWrapperComment rwc = new ResponseWrapperComment(comments.size(), comments);
         return ResponseEntity.ok(rwc);
     }
+
+    public ResponseEntity<CommentDTO> getComment(int adId, int commentId) {
+        log.info("getComment ");
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
+        List<Comment> comments = commentRepository.findAllByAd(ad);
+        for (Comment c : comments) {
+            if (c.getId() == commentId)
+                return ResponseEntity.ok(commentToDTO(c));
+        }
+        throw new CommentNotFoundException();
+    }
+
+
 }
