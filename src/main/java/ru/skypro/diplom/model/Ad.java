@@ -16,21 +16,17 @@ public class Ad {
     private int price;
     @OneToOne
     private User user;
-    private String phone;
-    private String email;
     @OneToOne
     private Image image;
 
     public Ad() {
     }
 
-    public Ad(String title, String description, int price, User user, String phone, String email) {
+    public Ad(String title, String description, int price, User user) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.user = user;
-        this.phone = phone;
-        this.email = email;
     }
 
     public int getId() {

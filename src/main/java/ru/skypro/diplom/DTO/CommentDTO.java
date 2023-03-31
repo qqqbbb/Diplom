@@ -4,37 +4,43 @@ package ru.skypro.diplom.DTO;
 
 public class CommentDTO {
 
-    private int id;
-    private String creationDate;
+    private int pk;
     private String text;
-    private int userId;
-    private int adId;
+    private String createdAt;
+    private int author;
+    private String authorImage;
+    private String authorFirstName;
 
-    public CommentDTO(int id, String creationDate, String text, int userId, int adId) {
-        this.id = id;
-        this.creationDate = creationDate;
+    public CommentDTO(int pk, String text, String createdAt, int author, String authorImage, String authorFirstName) {
+        this.pk = pk;
         this.text = text;
-        this.userId = userId;
-        this.adId = adId;
+        this.createdAt = createdAt;
+        this.author = author;
+        this.authorImage = authorImage;
+        this.authorFirstName = authorFirstName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
+    public int getPk() {
+        return pk;
     }
 
     public String getText() {
         return text;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public int getAdId() {
-        return adId;
+    public int getAuthor() {
+        return author;
+    }
+
+    public String getAuthorImage() {
+        return authorImage;
+    }
+
+    public String getAuthorFirstName() {
+        return authorFirstName;
     }
 }

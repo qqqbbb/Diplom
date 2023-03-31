@@ -49,8 +49,15 @@ public class AdService {
     public AdFull addAd(CreateAd createAd, MultipartFile file) throws IOException {
         log.info("addAd");
         User user = userService.getCurrentUser();
-        Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user, user.getPhone(), user.getEmail());
+        Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
         imageService.uploadImage(ad, file);
+        return getFullAd(ad);
+    }
+
+    public AdFull updateAd(CreateAd createAd, int id) {
+        log.info("updateAd");
+        User user = userService.getCurrentUser();
+        Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
         return getFullAd(ad);
     }
 

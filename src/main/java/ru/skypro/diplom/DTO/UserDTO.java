@@ -1,10 +1,5 @@
 package ru.skypro.diplom.DTO;
 
-import ru.skypro.diplom.model.Avatar;
-
-
-import java.time.LocalDate;
-
 public class UserDTO {
 
     private int id;
@@ -12,18 +7,14 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String phone;
-    private String regDate;
-    private String city;
-    private String avatar;
+    private String image;
 
-    public UserDTO(int id, String firstName, String lastName, String email, String phone, String regDate, String city) {
+    public UserDTO(int id, String firstName, String lastName, String email, String phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.regDate = regDate;
-        this.city = city;
     }
 
     public int getId() {
@@ -46,15 +37,7 @@ public class UserDTO {
         return phone;
     }
 
-    public String getRegDate() {
-        return regDate;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getAvatar() {
-        return avatar;
+    public String getImage() {
+        return image;
     }
 }

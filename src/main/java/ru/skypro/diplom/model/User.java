@@ -14,22 +14,18 @@ public class User {
     private String lastName;
     private String email;
     private String phone;
-    private LocalDate regDate;
-    private String city;
     @OneToOne
     private Avatar avatar;
 
     protected User() {
     }
 
-    public User(int id, String firstName, String lastName, String email, String phone, LocalDate regDate, String city) {
+    public User(int id, String firstName, String lastName, String email, String phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.regDate = regDate;
-        this.city = city;
     }
 
     public int getId() {
@@ -50,14 +46,6 @@ public class User {
 
     public String getPhone() {
         return phone;
-    }
-
-    public LocalDate getRegDate() {
-        return regDate;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public Avatar getAvatar() {

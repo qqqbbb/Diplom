@@ -3,14 +3,14 @@ package ru.skypro.diplom.DTO;
 public class AdPreview {
     private int id;
     private String title;
-    private int authorId;
+    private int author;
     private int price;
     private String image;
 
-    public AdPreview(int id, String title, int authorId, int price) {
+    public AdPreview(int id, String title, int author, int price) {
         this.id = id;
         this.title = title;
-        this.authorId = authorId;
+        this.author = author;
         this.price = price;
     }
 
@@ -22,8 +22,8 @@ public class AdPreview {
         return title;
     }
 
-    public int getAuthorId() {
-        return authorId;
+    public int getAuthor() {
+        return author;
     }
 
     public int getPrice() {

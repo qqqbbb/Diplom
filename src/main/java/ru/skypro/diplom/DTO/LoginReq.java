@@ -16,19 +16,6 @@ public class LoginReq {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LoginReq loginReq = (LoginReq) o;
-        return getPassword().equals(loginReq.getPassword()) && getUsername().equals(loginReq.getUsername());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPassword(), getUsername());
-    }
-
-    @Override
     public String toString() {
         return "LoginReq{" +
                 "password='" + password + '\'' +

@@ -37,12 +37,11 @@ public class UserService {
     }
 
     public User dtoToUser(UserDTO userDTO){
-        LocalDate localDate = parseDate(userDTO.getRegDate());
-        return new User(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhone(), localDate, userDTO.getCity());
+        return new User(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhone());
     }
 
     public UserDTO userToDTO(User user){
-        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getRegDate().toString(), user.getCity());
+        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
     }
 
     public UserDTO updateUser (UserDTO userDTO){

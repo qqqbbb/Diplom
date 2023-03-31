@@ -4,10 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
-//import ru.skypro.diplom.model.Comment;
-import ru.skypro.diplom.service.AdService;
-import ru.skypro.diplom.service.CommentService;
-import ru.skypro.diplom.service.ImageService;
+import ru.skypro.diplom.service.*;
 
 import java.io.IOException;
 
@@ -15,22 +12,17 @@ import java.io.IOException;
 @RequestMapping("Ads")
 @CrossOrigin(value = "http://localhost:3000")
 public class AdsController {
-
     private final AdService adService;
     private final CommentService commentService;
-    private final ImageService imageService;
 
-    public AdsController(AdService adService, CommentService commentService, ImageService imageService) {
+    public AdsController(AdService adService, CommentService commentService) {
         this.adService = adService;
         this.commentService = commentService;
-        this.imageService = imageService;
     }
 
     @PostMapping
-    public ResponseEntity<AdFull> addAd(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) {
-
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AdFull> addAd(@RequestPart(value = "properties") CreateAd createAd, @RequestPart(value = "image") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(adService.addAd(createAd, file));
     }
 
     @GetMapping
@@ -52,7 +44,7 @@ public class AdsController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd) {
-
+        adService.updateAd(createAd, id);
         return ResponseEntity.ok().build();
     }
 

@@ -1,18 +1,15 @@
 package ru.skypro.diplom.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.skypro.diplom.DTO.CommentDTO;
-import ru.skypro.diplom.DTO.ResponseWrapperComment;
+import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CommentService {
@@ -43,18 +40,16 @@ public class CommentService {
     }
 
     public Comment dtoToComment(CommentDTO dto) {
-        Optional<User> optionalUser = userRepository.findById(dto.getUserId());
+        Optional<User> optionalUser = userRepository.findById(dto.getAuthor());
         User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
-        Optional<Ad> optionalAd = adRepository.findById(dto.getAdId());
-        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
-        LocalDate localDate = parseDate(dto.getCreationDate());
-        return new Comment(dto.getId(), localDate, dto.getText(), user, ad);
+        LocalDate localDate = parseDate(dto.getCreatedAt());
+        Optional<Comment> optionalComment = commentRepository.findById(dto.getPk());
+        return optionalComment.orElse(new Comment(dto.getPk(), localDate, dto.getText(), user));
     }
 
     public CommentDTO commentToDTO(Comment comment) {
         User user = comment.getUser();
-        Ad ad = comment.getAd();
-        return new CommentDTO(comment.getId(), comment.getCreationDate().toString(), comment.getText(), user.getId(), ad.getId());
+        return new CommentDTO(comment.getId(), comment.getText(), comment.getCreationDate().toString(), user.getId(), null, user.getFirstName());
     }
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId) {
