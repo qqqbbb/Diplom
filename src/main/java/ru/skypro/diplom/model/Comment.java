@@ -23,11 +23,12 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, LocalDate creationDate, String text, User user) {
+    public Comment(int id, LocalDate creationDate, String text, User user, Ad ad) {
         this.id = id;
         this.creationDate = creationDate;
         this.text = text;
         this.user = user;
+        this.ad = ad;
     }
 
     @Override
@@ -79,9 +80,6 @@ public class Comment {
 
         return ad;
     }
-
-    public void setAd(Ad ad) {
-        this.ad = ad;
-    }
+    
 
 }

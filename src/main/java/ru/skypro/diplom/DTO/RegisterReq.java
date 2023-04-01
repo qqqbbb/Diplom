@@ -25,49 +25,20 @@ public class RegisterReq {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public Role getRole() {
         return role;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RegisterReq that = (RegisterReq) o;
-        return getUsername().equals(that.getUsername()) && getPassword().equals(that.getPassword()) && getFirstName().equals(that.getFirstName()) && getLastName().equals(that.getLastName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getFirstName(), getLastName());
     }
 
     @Override

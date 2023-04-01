@@ -20,7 +20,7 @@ public class CommentDTO {
         this.authorFirstName = authorFirstName;
     }
 
-    public int getPk() {
+    public int getId() {
         return pk;
     }
 
@@ -28,11 +28,11 @@ public class CommentDTO {
         return text;
     }
 
-    public String getCreatedAt() {
+    public String getCreationDate() {
         return createdAt;
     }
 
-    public int getAuthor() {
+    public int getAuthorId() {
         return author;
     }
 

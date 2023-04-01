@@ -39,12 +39,14 @@ public class CommentService {
         return null;
     }
 
-    public Comment dtoToComment(CommentDTO dto) {
-        Optional<User> optionalUser = userRepository.findById(dto.getAuthor());
+    public Comment dtoToComment(CommentDTO dto, int adId) {
+        Optional<User> optionalUser = userRepository.findById(dto.getAuthorId());
         User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
-        LocalDate localDate = parseDate(dto.getCreatedAt());
-        Optional<Comment> optionalComment = commentRepository.findById(dto.getPk());
-        return optionalComment.orElse(new Comment(dto.getPk(), localDate, dto.getText(), user));
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        LocalDate localDate = parseDate(dto.getCreationDate());
+        Optional<Comment> optionalComment = commentRepository.findById(dto.getId());
+        return optionalComment.orElse(new Comment(dto.getId(), localDate, dto.getText(), user, ad));
     }
 
     public CommentDTO commentToDTO(Comment comment) {
@@ -53,21 +55,15 @@ public class CommentService {
     }
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId) {
-        Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
-        Comment comment = dtoToComment(commentDTO);
-        comment.setAd(ad);
+        Comment comment = dtoToComment(commentDTO, adId);
         commentRepository.save(comment);
         return commentDTO;
     }
 
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO) {
-        Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment comment = optionalComment.orElseThrow(()->new CommentNotFoundException());
-        comment = dtoToComment(commentDTO);
-        comment.setAd(ad);
+        comment = dtoToComment(commentDTO, adId);
         commentRepository.save(comment);
         return commentDTO;
     }
@@ -75,7 +71,7 @@ public class CommentService {
     public ResponseEntity<ResponseWrapperComment> getComments(int adId) {
         log.info("getComments");
         Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new CommentNotFoundException());
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         List<Comment> comments = commentRepository.findAllByAd(ad);
         ResponseWrapperComment rwc = new ResponseWrapperComment(comments.size(), comments);
         return ResponseEntity.ok(rwc);

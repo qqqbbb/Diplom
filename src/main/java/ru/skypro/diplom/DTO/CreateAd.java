@@ -6,9 +6,6 @@ public class CreateAd {
     private String description;
     private int price;
 
-    public CreateAd() {
-    }
-
     public CreateAd(String title, String description, int price) {
         this.title = title;
         this.description = description;
