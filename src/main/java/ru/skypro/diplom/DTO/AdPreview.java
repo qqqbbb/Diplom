@@ -7,11 +7,12 @@ public class AdPreview {
     private int price;
     private String image;
 
-    public AdPreview(int id, String title, int author, int price) {
+    public AdPreview(int id, String title, int author, int price, String image) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
+        this.image = image;
     }
 
     public int getId() {

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.Exceptions.AvatarNotFoundException;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.AvatarRepository;
+import ru.skypro.diplom.repository.ImageRepository;
 
 import java.io.*;
 
@@ -16,11 +17,15 @@ public class AvatarService {
 
     private final UserService userService;
     private final AvatarRepository avatarRepository;
+    private final ImageRepository imageRepository;
+    private final ImageService imageService;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public AvatarService(UserService userService, AvatarRepository avatarRepository) {
+    public AvatarService(UserService userService, AvatarRepository avatarRepository, ImageRepository imageRepository, ImageService imageService) {
         this.userService = userService;
         this.avatarRepository = avatarRepository;
+        this.imageRepository = imageRepository;
+        this.imageService = imageService;
     }
 
     public ResponseEntity uploadAvatar(MultipartFile file) throws IOException {

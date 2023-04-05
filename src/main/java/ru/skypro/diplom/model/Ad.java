@@ -22,11 +22,12 @@ public class Ad {
     public Ad() {
     }
 
-    public Ad(String title, String description, int price, User user) {
+    public Ad(String title, String description, int price, User user, Image image) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.user = user;
+        this.image = image;
     }
 
     public int getId() {

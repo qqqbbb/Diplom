@@ -73,7 +73,12 @@ public class CommentService {
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         List<Comment> comments = commentRepository.findAllByAd(ad);
-        ResponseWrapperComment rwc = new ResponseWrapperComment(comments.size(), comments);
+        List<CommentDTO> commentDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentDTO commentDTO = commentToDTO(comment);
+            commentDTOs.add(commentDTO);
+        }
+        ResponseWrapperComment rwc = new ResponseWrapperComment(commentDTOs.size(), commentDTOs);
         return ResponseEntity.ok(rwc);
     }
 

@@ -25,12 +25,12 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public void uploadImage(Ad ad, MultipartFile file) throws IOException {
-        log.info("upload Image " );
-        Image image = new Image(ad.getTitle(), file.getSize(), file.getContentType(), file.getBytes());
-        ad.setImage(image);
-        imageRepository.save(image);
-    }
+//    public void uploadImage(Ad ad, MultipartFile file) throws IOException {
+//        log.info("upload Image " );
+//        Image image = new Image(ad.getTitle(), file.getSize(), file.getContentType(), file.getBytes());
+//        ad.setImage(image);
+//        imageRepository.save(image);
+//    }
 
     public Image getImage(Ad ad) {
         log.info("getImage " );

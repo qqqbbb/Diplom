@@ -5,9 +5,9 @@ import java.util.List;
 
 public class ResponseWrapperAds {
     private int count;
-    private List<Ad> results;
+    private List<AdPreview> results;
 
-    public ResponseWrapperAds(int count, List<Ad> results) {
+    public ResponseWrapperAds(int count, List<AdPreview> results) {
         this.count = count;
         this.results = results;
     }
@@ -16,7 +16,7 @@ public class ResponseWrapperAds {
         return count;
     }
 
-    public List<Ad> getResults() {
+    public List<AdPreview> getResults() {
         return results;
     }
 }

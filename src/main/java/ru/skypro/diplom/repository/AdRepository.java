@@ -8,4 +8,7 @@ import java.util.List;
 public interface AdRepository extends JpaRepository<Ad, Integer> {
 
     List<Ad> findAllByUser(User user);
+
+    List<Ad> findAdsByTitleLike(String s);
+
 }
