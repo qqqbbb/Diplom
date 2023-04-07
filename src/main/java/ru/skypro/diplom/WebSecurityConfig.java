@@ -36,10 +36,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((authz) ->
                         authz
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
+//                                .mvcMatchers("/ads/**", "/users/**").permitAll()
 //                                .mvcMatchers("/ads/**", "/users/**").authenticated()
-
                 )
-                .cors().disable()
+//                .cors().disable()
+                .cors().and()
                 .httpBasic(withDefaults());
         return http.build();
     }
