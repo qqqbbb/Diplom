@@ -10,7 +10,7 @@ import ru.skypro.diplom.service.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("Ads")
+@RequestMapping("ads")
 @CrossOrigin(value = "http://localhost:3000")
 public class AdsController {
     private final AdService adService;
