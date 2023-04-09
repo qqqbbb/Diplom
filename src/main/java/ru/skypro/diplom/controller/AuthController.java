@@ -2,10 +2,12 @@ package ru.skypro.diplom.controller;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.diplom.enums.Role;
 import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.service.AuthService;
+import ru.skypro.diplom.service.UserService;
 
 import static ru.skypro.diplom.enums.Role.*;
 
@@ -14,29 +16,43 @@ import static ru.skypro.diplom.enums.Role.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, UserService userService) {
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginReq req) {
+    public ResponseEntity<?> login(@RequestBody LoginReq req, Authentication authentication) {
         LoggerFactory.getLogger(this.getClass()).info("login " + req.toString());
-        if (authService.login(req.getUsername(), req.getPassword())) {
+        if (authentication == null)
+            System.out.println("login authentication null ");
+        else
+            System.out.println("login authentication " + authentication.getName());
+
+        if (userService.login(req.getUsername(), req.getPassword())) {
+            if (authentication == null)
+                System.out.println("login authentication after null ");
+            else
+                System.out.println("login authentication after " + authentication.getName());
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         LoggerFactory.getLogger(this.getClass()).info("register " + req.toString());
         Role role = req.getRole() == null ? USER : req.getRole();
-        if (authService.register(req, role)) {
+        if (userService.register(req, role)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
 }

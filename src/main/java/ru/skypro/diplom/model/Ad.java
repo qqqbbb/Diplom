@@ -14,7 +14,7 @@ public class Ad {
     private String title;
     private String description;
     private int price;
-    @OneToOne
+    @ManyToOne
     private User user;
     @OneToOne
     private Image image;
@@ -22,12 +22,12 @@ public class Ad {
     public Ad() {
     }
 
-    public Ad(String title, String description, int price, User user, Image image) {
+    public Ad(String title, String description, int price, User user) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.user = user;
-        this.image = image;
+//        this.image = image;
     }
 
     public int getId() {

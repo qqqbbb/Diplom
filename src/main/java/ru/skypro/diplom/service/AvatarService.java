@@ -28,7 +28,7 @@ public class AvatarService {
         this.imageService = imageService;
     }
 
-    public ResponseEntity uploadAvatar(MultipartFile file) throws IOException {
+    public ResponseEntity uploadAvatar(MultipartFile file, String userName) throws IOException {
         log.info("uploadAvatar " + file.getOriginalFilename());
         if (file.getSize() > 1024 * 1024)
             return ResponseEntity.badRequest().body("File is too big");
@@ -38,7 +38,7 @@ public class AvatarService {
         if (contentType == null || !contentType.contains("image"))
             return ResponseEntity.badRequest().body("Only images can be uploaded");
 
-        User user = userService.getCurrentUser();
+        User user = userService.getUserByName(userName);
         Avatar avatar = new Avatar(file.getOriginalFilename(), file.getSize(), file.getContentType(), file.getBytes());
         user.setAvatar(avatar);
         return ResponseEntity.ok(avatarRepository.save(avatar));

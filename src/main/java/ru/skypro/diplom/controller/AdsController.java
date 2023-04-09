@@ -2,6 +2,7 @@ package ru.skypro.diplom.controller;
 
 import org.slf4j.*;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
@@ -23,16 +24,16 @@ public class AdsController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public ResponseEntity<AdFull> addAd( @RequestPart(value = "image") MultipartFile file, @RequestPart(value = "x") CreateAd createAd) throws IOException {
+    public ResponseEntity<AdPreview> addAd( @RequestPart(value = "image") MultipartFile file, @RequestPart(value = "properties") CreateAd createAd, Authentication authentication) throws IOException {
         log.info("addAd");
-        return ResponseEntity.ok(adService.addAd(createAd, file));
+        return ResponseEntity.ok(adService.addAd(createAd, file, authentication.getName()));
     }
 
-    @PostMapping("/AddWithDefaultImage")
-    public ResponseEntity<AdFull> addWithDefaultImage(@RequestBody CreateAd createAd) {
-        log.info("AddWithDefaultImage");
-        return ResponseEntity.ok(adService.addAd(createAd));
-    }
+//    @PostMapping("/AddWithDefaultImage")
+//    public ResponseEntity<AdFull> addWithDefaultImage(@RequestBody CreateAd createAd) {
+//        log.info("AddWithDefaultImage");
+//        return ResponseEntity.ok(adService.addAd(createAd));
+//    }
 
 //    @PostMapping("/AddImage")
 //    public ResponseEntity<?> addImage() {
@@ -61,16 +62,16 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd) {
+    public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd, Authentication authentication) {
         log.info("updateAd");
-        adService.updateAd(createAd, id);
+        adService.updateAd(createAd, id, authentication.getName());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<ResponseWrapperAds> getCurrentUserAds() {
+    public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds");
-        return adService.getCurrentUserAds();
+        return adService.getCurrentUserAds(authentication.getName());
     }
 
     @GetMapping("/{id}/image")
