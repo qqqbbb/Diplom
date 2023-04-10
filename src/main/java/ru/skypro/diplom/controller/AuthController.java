@@ -24,18 +24,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginReq req, Authentication authentication) {
+    public ResponseEntity<?> login(@RequestBody LoginReq req) {
         LoggerFactory.getLogger(this.getClass()).info("login " + req.toString());
-        if (authentication == null)
-            System.out.println("login authentication null ");
-        else
-            System.out.println("login authentication " + authentication.getName());
-
         if (userService.login(req.getUsername(), req.getPassword())) {
-            if (authentication == null)
-                System.out.println("login authentication after null ");
-            else
-                System.out.println("login authentication after " + authentication.getName());
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

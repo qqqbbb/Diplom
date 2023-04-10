@@ -6,9 +6,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.RegisterReq;
 import ru.skypro.diplom.DTO.UserDTO;
+import ru.skypro.diplom.Exceptions.NotAuthorizedUserAction;
 import ru.skypro.diplom.Exceptions.UserAlreadyRegisteredException;
 import ru.skypro.diplom.Exceptions.UserNotFoundException;
 import ru.skypro.diplom.Exceptions.currentUserDetailsNotFound;
@@ -88,8 +90,10 @@ public class UserService {
         return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPhone());
     }
 
-    public UserDTO updateUser (UserDTO userDTO){
+    public UserDTO updateUser (UserDTO userDTO, String userName){
         log.info("updateUser " + userDTO);
+        if (!userName.equals(userDTO.getEmail()))
+            throw new NotAuthorizedUserAction();
 
         User user = userRepository.save(dtoToUser(userDTO));
 //        Optional<User> optionalUser = userRepository.findById(userDTO.getId());

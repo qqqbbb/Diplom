@@ -57,7 +57,7 @@ public class UserController {
             log.info("updateUser " + userDTO.getEmail() + " " + userDTO.getFirstName());
 
         log.info("updateUser authentication.getName " + authentication.getName());
-        UserDTO updatedDTO = userService.updateUser(userDTO);
+        UserDTO updatedDTO = userService.updateUser(userDTO, authentication.getName());
         return ResponseEntity.ok(updatedDTO);
     }
 
@@ -68,16 +68,5 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping ("/addUser")
-//    public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO ) {
-//
-//        return ResponseEntity.ok(userService.addUser(userDTO));
-//    }
-
-//    @GetMapping ("/getAvatar")
-//    public ResponseEntity<byte[]> getAvatar() {
-//
-//        return avatarService.downloadAvatar(userService.getCurrentUser());
-//    }
 
 }
