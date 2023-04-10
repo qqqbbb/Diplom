@@ -45,7 +45,7 @@ public class AdsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAd(@PathVariable int id, Authentication authentication) {
         log.info("deleteAd");
-        adService.deleteAd(id);
+        adService.deleteAd(id, authentication.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -71,7 +71,7 @@ public class AdsController {
     @PatchMapping(value ="/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) throws IOException {
         log.info("updateImage " + id);
-        adService.updateAdImage(id, file);
+        adService.updateAdImage(id, file, authentication.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -83,7 +83,7 @@ public class AdsController {
     }
 
     @PostMapping("/{adId}/comments")
-    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId, Authentication authentication) {
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId) {
         log.info("addComment " + adId);
         commentService.addComment(commentDTO, adId);
         return ResponseEntity.ok().build();
@@ -98,14 +98,14 @@ public class AdsController {
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId, Authentication authentication) {
         log.info("deleteComment " + commentId);
-        commentService.deleteComment(adId, commentId);
+        commentService.deleteComment(adId, commentId, authentication.getName());
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable int commentId, @PathVariable int adId, @RequestBody CommentDTO commentDTO, Authentication authentication) {
         log.info("updateComment " + commentId);
-        CommentDTO commentDTO1 = commentService.updateComment(commentId, adId, commentDTO);
+        CommentDTO commentDTO1 = commentService.updateComment(commentId, adId, commentDTO, authentication.getName());
         return ResponseEntity.ok(commentDTO1);
     }
 

@@ -91,8 +91,13 @@ public class AdService {
         return adToFullDTO(ad);
     }
 
-    public void deleteAd(int id) {
+    public void deleteAd(int id, String userName) {
         log.info("deleteAd " + id);
+        Optional<Ad> optionalAd = adRepository.findById(id);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        if (!ad.getUser().getUsername().equals(userName))
+            throw new NotAuthorizedUserAction();
+
         adRepository.deleteById(id);
     }
 
@@ -108,10 +113,13 @@ public class AdService {
         return ResponseEntity.ok(new ResponseWrapperAds(ads.size(), adPreviews));
     }
 
-    public ResponseEntity<?> updateAdImage(int id, MultipartFile file) {
+    public ResponseEntity<?> updateAdImage(int id, MultipartFile file, String userName) {
         log.info("updateAdImage ");
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        if (!ad.getUser().getUsername().equals(userName))
+            throw new NotAuthorizedUserAction();
+
         setImage(ad, file);
         adRepository.saveAndFlush(ad);
         return ResponseEntity.ok().build();

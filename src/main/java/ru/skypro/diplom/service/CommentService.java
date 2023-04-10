@@ -60,7 +60,12 @@ public class CommentService {
         return commentDTO;
     }
 
-    public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO) {
+    public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, String userName) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        if (!ad.getUser().getUsername().equals(userName))
+            throw new NotAuthorizedUserAction();
+
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment comment = optionalComment.orElseThrow(()->new CommentNotFoundException());
         comment = dtoToComment(commentDTO, adId);
@@ -94,7 +99,12 @@ public class CommentService {
         throw new CommentNotFoundException();
     }
 
-    public void deleteComment(int adId, int commentId) {
+    public void deleteComment(int adId, int commentId, String userName) {
+        Optional<Ad> optionalAd = adRepository.findById(adId);
+        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        if (!ad.getUser().getUsername().equals(userName))
+            throw new NotAuthorizedUserAction();
+
         commentRepository.deleteById(commentId);
     }
 
