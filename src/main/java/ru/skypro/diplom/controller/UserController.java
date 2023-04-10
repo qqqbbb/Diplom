@@ -44,19 +44,26 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getUser(Authentication authentication) {
-//        authentication.getName()
+        log.info("getUser");
         return ResponseEntity.ok(userService.getUserByName(authentication.getName()));
     }
 
     @PatchMapping ("/me")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO ) {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
+        log.info("updateUser");
+        if (userDTO == null)
+            log.info("updateUser userDTO == null");
+        else
+            log.info("updateUser " + userDTO.getEmail() + " " + userDTO.getFirstName());
+
+        log.info("updateUser authentication.getName " + authentication.getName());
         UserDTO updatedDTO = userService.updateUser(userDTO);
         return ResponseEntity.ok(updatedDTO);
     }
 
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity updateUserAvatar(@RequestPart(value = "image") MultipartFile file, Authentication authentication) throws IOException {
-
+        log.info("updateUserAvatar");
         avatarService.uploadAvatar(file, authentication.getName());
         return ResponseEntity.ok().build();
     }

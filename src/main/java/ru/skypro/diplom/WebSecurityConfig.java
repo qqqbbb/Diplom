@@ -17,21 +17,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
 
 //    private final AuthService authService;
-private String currentUserName;
+//private String currentUserName;
 //private final UserDetailsManager manager;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-//    public WebSecurityConfig(AuthService authService) {
-//        this.authService = authService;
-//    }
-
-    public void setCurrentUserName(String currentUserName) {
-        this.currentUserName = currentUserName;
-    }
-
-//    public WebSecurityConfig(UserDetailsManager manager) {
-//        this.manager = manager;
-//    }
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
@@ -47,13 +36,10 @@ private String currentUserName;
     public InMemoryUserDetailsManager userDetailsService() {
         log.info("userDetailsService");
         UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user@gmail.com")
-                .password("password")
+                .username("Q1@ya.ru")
+                .password("qqqqqqqq")
                 .roles("USER")
                 .build();
-
-        if (currentUserName == null)
-            log.info("userDetailsService currentUserName null");
 
         return new InMemoryUserDetailsManager(userDetails);
     }
@@ -79,8 +65,7 @@ private String currentUserName;
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
-                                authz
-                                        .mvcMatchers(AUTH_WHITELIST).permitAll()
+                                authz.mvcMatchers(AUTH_WHITELIST).permitAll()
                                 .mvcMatchers("/ads/**", "/users/**").authenticated()
                 )
                 .cors().and()

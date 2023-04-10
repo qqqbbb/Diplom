@@ -20,20 +20,19 @@ public class AuthService {
     private final UserDetailsManager manager;
     private final PasswordEncoder encoder;
     private final UserService userService;
-    private final WebSecurityConfig webSecurityConfig;
+//    private final WebSecurityConfig webSecurityConfig;
 
     private ru.skypro.diplom.model.User currentUser;
     private UserDetails currentUserDetails;
 
-    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
+//    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public AuthService(UserDetailsManager manager, UserService userService, InMemoryUserDetailsManager inMemoryUserDetailsManager, WebSecurityConfig webSecurityConfig) {
+    public AuthService(UserDetailsManager manager, UserService userService) {
         this.manager = manager;
         this.userService = userService;
         this.encoder = new BCryptPasswordEncoder();
-        this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
-        this.webSecurityConfig = webSecurityConfig;
+//        this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
     }
 
 //    public boolean login(String userName, String password) {

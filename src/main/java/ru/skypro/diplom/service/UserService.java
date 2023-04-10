@@ -90,7 +90,11 @@ public class UserService {
 
     public UserDTO updateUser (UserDTO userDTO){
         log.info("updateUser " + userDTO);
+
         User user = userRepository.save(dtoToUser(userDTO));
+//        Optional<User> optionalUser = userRepository.findById(userDTO.getId());
+//        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+
         return userToDTO(user);
     }
 
@@ -124,7 +128,7 @@ public class UserService {
 //    }
 
     public User getUserByName (String name){
-        log.info(" getCurrentUser " + name);
+        log.info(" getUserByName " + name);
 //        Optional<User> optionalUser = userRepository.findById(1);
         Optional<User> optionalUser = userRepository.findFirstByUsername(name);
         return optionalUser.orElseThrow(() -> new UserNotFoundException());

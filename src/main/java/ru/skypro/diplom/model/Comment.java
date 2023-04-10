@@ -15,9 +15,9 @@ public class Comment {
     private int id;
     private LocalDate creationDate;
     private String text;
-    @OneToOne
+    @ManyToOne
     private User user;
-    @OneToOne
+    @ManyToOne
     private Ad ad;
 
     public Comment() {

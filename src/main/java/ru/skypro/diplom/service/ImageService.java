@@ -25,34 +25,34 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public void uploadImage(Ad ad, MultipartFile file) throws IOException {
-        log.info("upload Image " );
-        Image image = new Image(ad.getTitle(), file.getSize(), file.getContentType(), file.getBytes());
-        ad.setImage(image);
-        imageRepository.save(image);
-    }
+//    public void uploadImage(Ad ad, MultipartFile file) throws IOException {
+//        log.info("upload Image " );
+//        Image image = new Image(ad.getTitle(), file.getSize(), file.getContentType(), file.getBytes());
+//        ad.setImage(image);
+//        imageRepository.save(image);
+//    }
 
-    public Image getImage(Ad ad) {
-        log.info("getImage " );
-        Image image = ad.getImage();
-        return image;
-    }
+//    public Image getImage(Ad ad) {
+//        log.info("getImage " );
+//        Image image = ad.getImage();
+//        return image;
+//    }
 
-    public Image getImage(int id) {
-        log.info("getImage " + id );
-        Optional<Image> optionalImage = imageRepository.findById(id);
-        Image image = optionalImage.orElseThrow(()->new ImageNotFoundException());
-        return image;
-    }
+//    public Image getImage(int id) {
+//        log.info("getImage " + id );
+//        Optional<Image> optionalImage = imageRepository.findById(id);
+//        Image image = optionalImage.orElseThrow(()->new ImageNotFoundException());
+//        return image;
+//    }
 
-    public ResponseEntity<byte[]> downloadImage(Ad ad) {
-        log.info("downloadImage " + ad.getTitle());
-        Image image = ad.getImage();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(image.getMediaType()));
-        headers.setContentLength(image.getData().length);
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(image.getData());
-    }
+//    public ResponseEntity<byte[]> downloadImage(Ad ad) {
+//        log.info("downloadImage " + ad.getTitle());
+//        Image image = ad.getImage();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType(image.getMediaType()));
+//        headers.setContentLength(image.getData().length);
+//        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(image.getData());
+//    }
 
 
 

@@ -19,16 +19,12 @@ public class AdService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    private final ImageService imageService;
-    private final ImageRepository imageRepository;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public AdService(AdRepository adRepository, UserRepository userRepository, UserService userService, ImageService imageService, ImageRepository imageRepository) {
+    public AdService(AdRepository adRepository, UserRepository userRepository, UserService userService) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-        this.imageService = imageService;
-        this.imageRepository = imageRepository;
     }
 
 //    public AdFull getFullAd(Ad ad) {
@@ -39,7 +35,16 @@ public class AdService {
 //    }
 
     public AdPreview adToDTO(Ad ad) {
-        return new AdPreview(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice(), "");
+        String image = "/ads/" + ad.getId() + "/image";
+        return new AdPreview(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice(), image);
+    }
+
+    public AdFull adToFullDTO(Ad ad) {
+        log.info("adToFullDTO");
+        User user = ad.getUser();
+        String image = "/ads/" + ad.getId() + "/image";
+        AdFull adFull = new AdFull(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getUsername(), user.getPhone(), ad.getPrice(), image);
+        return adFull;
     }
 
     public ResponseWrapperAds getAllAds() {
@@ -53,52 +58,37 @@ public class AdService {
         return new ResponseWrapperAds(adPreviews.size(), adPreviews);
     }
 
-//    public ResponseEntity addImage() {
-//        log.info("addImage");
-//        User user = userService.getCurrentUser();
-//        Avatar avatar = user.getAvatar();
-//        Image image = new Image(avatar.getFilePath(), avatar.getFileSize(), avatar.getMediaType(), avatar.getData());
-//        imageRepository.saveAndFlush(image);
-//        return ResponseEntity.ok().build();
-//    }
-
-    public AdPreview addAd(CreateAd createAd, MultipartFile file, String userName) throws IOException {
+    public AdPreview addAd(CreateAd createAd, MultipartFile file, String userName) {
         log.info("addAd");
         User user = userService.getUserByName(userName);
-//        Avatar avatar = user.getAvatar();
-//        Image image = new Image(avatar.getFilePath(), avatar.getFileSize(), avatar.getMediaType(), avatar.getData());
         Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
+        setImage(ad, file);
         adRepository.save(ad);
-//        imageService.uploadImage(ad, file);
         return adToDTO(ad);
     }
 
-//    public AdPreview addAd(CreateAd createAd){
-//        log.info("addAd");
-//        User user = userService.getCurrentUser();
-////        Avatar avatar = user.getAvatar();
-////        Image image = new Image(avatar.getFilePath(), avatar.getFileSize(), avatar.getMediaType(), avatar.getData());
-//        Optional<Image> imageOptioanl = imageRepository.findById(1);
-//        Image image = imageOptioanl.orElseThrow(() -> new ImageNotFoundException());
-////        imageRepository.saveAndFlush(image);
-//        Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
-//        adRepository.save(ad);
-//        return adToDTO(ad);
-//    }
+    public void setImage(Ad ad, MultipartFile file){
+        log.info("setImage");
+        try {
+            byte[] bytes = file.getBytes();
+            ad.setImage(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public AdPreview updateAd(CreateAd createAd, int id, String userName) {
         log.info("updateAd");
         User user = userService.getUserByName(userName);
-//        Image image = new Image(avatar.getFilePath(), avatar.getFileSize(), avatar.getMediaType(), avatar.getData());
         Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
         return adToDTO(ad);
     }
 
-    public AdPreview getAd(int id) {
+    public AdFull getAd(int id) {
         log.info("getAd " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
-        return adToDTO(ad);
+        return adToFullDTO(ad);
     }
 
     public void deleteAd(int id) {
@@ -118,11 +108,12 @@ public class AdService {
         return ResponseEntity.ok(new ResponseWrapperAds(ads.size(), adPreviews));
     }
 
-    public ResponseEntity<?> updateAdImage(int id, MultipartFile file) throws IOException {
+    public ResponseEntity<?> updateAdImage(int id, MultipartFile file) {
         log.info("updateAdImage ");
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
-//        imageService.uploadImage(ad, file);
+        setImage(ad, file);
+        adRepository.saveAndFlush(ad);
         return ResponseEntity.ok().build();
     }
 
@@ -130,7 +121,7 @@ public class AdService {
         log.info("getImage " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
-        return imageService.downloadImage(ad);
+        return ResponseEntity.ok(ad.getImage());
     }
 
 }

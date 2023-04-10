@@ -40,7 +40,7 @@ public class AvatarService {
 
         User user = userService.getUserByName(userName);
         Avatar avatar = new Avatar(file.getOriginalFilename(), file.getSize(), file.getContentType(), file.getBytes());
-        user.setAvatar(avatar);
+//        user.setAvatar(avatar);
         return ResponseEntity.ok(avatarRepository.save(avatar));
     }
 

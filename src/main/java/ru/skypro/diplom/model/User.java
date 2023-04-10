@@ -1,6 +1,7 @@
 package ru.skypro.diplom.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity()
 @Table(name = "Users")
@@ -50,7 +51,34 @@ public class User {
         return avatar;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getUsername(), user.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUsername());
+    }
+
+
 }

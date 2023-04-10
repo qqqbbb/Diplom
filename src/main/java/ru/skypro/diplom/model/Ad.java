@@ -16,8 +16,9 @@ public class Ad {
     private int price;
     @ManyToOne
     private User user;
-    @OneToOne
-    private Image image;
+//    @OneToOne
+//    private Image image;
+    private  byte[] image;
 
     public Ad() {
     }
@@ -53,8 +54,8 @@ public class Ad {
         return user;
     }
 
-    public Image getImage() {
-        if (image == null)
+    public byte[] getImage() {
+        if (image == null || image.length == 0)
             throw new ImageNotFoundException();
 
         return image;
@@ -64,7 +65,7 @@ public class Ad {
         this.price = price;
     }
 
-    public void setImage(Image image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
