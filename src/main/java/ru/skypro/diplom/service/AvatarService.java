@@ -44,23 +44,23 @@ public class AvatarService {
         return ResponseEntity.ok(avatarRepository.save(avatar));
     }
 
-    public Avatar getAvatar(User user) {
-        log.info("getAvatar " );
-        Avatar avatar = user.getAvatar();
-        if (avatar == null)
-            throw new AvatarNotFoundException();
+//    public Avatar getAvatar(User user) {
+//        log.info("getAvatar " );
+//        Avatar avatar = user.getAvatar();
+//        if (avatar == null)
+//            throw new AvatarNotFoundException();
+//
+//        return avatar;
+//    }
 
-        return avatar;
-    }
-
-    public ResponseEntity<byte[]> downloadAvatar(User user) {
-        log.info("downloadAvatar " + user.getId());
-        Avatar avatar = getAvatar(user);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
-        headers.setContentLength(avatar.getData().length);
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
-    }
+//    public ResponseEntity<byte[]> downloadAvatar(User user) {
+//        log.info("downloadAvatar " + user.getId());
+//        Avatar avatar = getAvatar(user);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+//        headers.setContentLength(avatar.getData().length);
+//        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+//    }
 
 
 }

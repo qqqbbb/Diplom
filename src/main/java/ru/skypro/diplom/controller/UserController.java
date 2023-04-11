@@ -17,18 +17,16 @@ import java.io.IOException;
 public class UserController {
 
     private final UserService userService;
-    private final AvatarService avatarService;
     private final AuthService authService;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    public UserController(UserService userService, AvatarService avatarService, AuthService authService) {
+
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
-        this.avatarService = avatarService;
         this.authService = authService;
     }
 
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword, Authentication authentication) {
-//        NewPassword resultPassword = new NewPassword();
         log.info("set_password " );
         if (authentication == null)
             log.info("set_password authentication == null" );
@@ -36,6 +34,7 @@ public class UserController {
             log.info("set_password authentication getName " + authentication.getName() );
 
         log.info("set_password currentPassword  " + newPassword.currentPassword );
+        log.info("set_password newPassword " + newPassword.newPassword );
         authService.changePassword(
                         newPassword.getCurrentPassword(),
                         newPassword.getNewPassword());
@@ -62,11 +61,24 @@ public class UserController {
     }
 
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity updateUserAvatar(@RequestPart(value = "image") MultipartFile file, Authentication authentication) throws IOException {
+    public ResponseEntity updateUserAvatar(@RequestPart(value = "image") MultipartFile file, Authentication authentication) {
         log.info("updateUserAvatar");
-        avatarService.uploadAvatar(file, authentication.getName());
+        if (file.getSize() > 1024 * 1024)
+            return ResponseEntity.badRequest().body("File is too big");
+
+        String contentType = file.getContentType();
+//        System.out.println("upload avatar contentType " + contentType);
+        if (contentType == null || !contentType.contains("image"))
+            return ResponseEntity.badRequest().body("Only images can be uploaded");
+
+        userService.setAvatar(file, authentication.getName());
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value ="/me/avatar", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getAvatar(Authentication authentication) {
+        log.info("getAvatar " );
+        return ResponseEntity.ok(userService.getAvatar(authentication.getName()));
+    }
 
 }

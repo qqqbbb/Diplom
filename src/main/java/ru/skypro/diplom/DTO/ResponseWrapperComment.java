@@ -7,6 +7,9 @@ public class ResponseWrapperComment {
     private int count;
     private List<CommentDTO> results;
 
+    public ResponseWrapperComment() {
+    }
+
     public ResponseWrapperComment(int count, List<CommentDTO> results) {
         this.count = count;
         this.results = results;
@@ -18,5 +21,13 @@ public class ResponseWrapperComment {
 
     public List<CommentDTO> getResults() {
         return results;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setResults(List<CommentDTO> results) {
+        this.results = results;
     }
 }

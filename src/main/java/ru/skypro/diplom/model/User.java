@@ -14,8 +14,7 @@ public class User {
     private String lastName;
     private String username;
     private String phone;
-    @OneToOne
-    private Avatar avatar;
+    private byte[] avatar;
 
     protected User() {
     }
@@ -47,7 +46,7 @@ public class User {
         return phone;
     }
 
-    public Avatar getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
@@ -63,7 +62,7 @@ public class User {
         this.phone = phone;
     }
 
-    public void setAvatar(Avatar avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 

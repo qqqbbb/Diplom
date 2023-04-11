@@ -7,6 +7,9 @@ public class ResponseWrapperAds {
     private int count;
     private List<AdPreview> results;
 
+    public ResponseWrapperAds() {
+    }
+
     public ResponseWrapperAds(int count, List<AdPreview> results) {
         this.count = count;
         this.results = results;
@@ -18,5 +21,13 @@ public class ResponseWrapperAds {
 
     public List<AdPreview> getResults() {
         return results;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void setResults(List<AdPreview> results) {
+        this.results = results;
     }
 }

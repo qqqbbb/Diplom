@@ -16,8 +16,6 @@ public class Ad {
     private int price;
     @ManyToOne
     private User user;
-//    @OneToOne
-//    private Image image;
     private  byte[] image;
 
     public Ad() {

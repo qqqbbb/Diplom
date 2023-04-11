@@ -11,6 +11,9 @@ public class AdFull {
     private int price;
     private String image;
 
+    public AdFull() {
+    }
+
     public AdFull(int id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
         this.id = id;
         this.title = title;
@@ -57,5 +60,41 @@ public class AdFull {
 
     public String getImage() {
         return image;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthorFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
+    }
+
+    public void setAuthorLastName(String authorLastName) {
+        this.authorLastName = authorLastName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

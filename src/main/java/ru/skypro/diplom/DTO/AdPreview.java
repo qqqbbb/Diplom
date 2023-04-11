@@ -7,6 +7,9 @@ public class AdPreview {
     private int price;
     private String image;
 
+    public AdPreview() {
+    }
+
     public AdPreview(int id, String title, int author, int price, String image) {
         this.id = id;
         this.title = title;
@@ -33,5 +36,25 @@ public class AdPreview {
 
     public String getImage() {
         return image;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(int author) {
+        this.author = author;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

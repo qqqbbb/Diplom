@@ -11,6 +11,9 @@ public class CommentDTO {
     private String authorImage;
     private String authorFirstName;
 
+    public CommentDTO() {
+    }
+
     public CommentDTO(int pk, String text, String createdAt, int author, String authorImage, String authorFirstName) {
         this.pk = pk;
         this.text = text;
@@ -42,5 +45,29 @@ public class CommentDTO {
 
     public String getAuthorFirstName() {
         return authorFirstName;
+    }
+
+    public void setPk(int pk) {
+        this.pk = pk;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setAuthor(int author) {
+        this.author = author;
+    }
+
+    public void setAuthorImage(String authorImage) {
+        this.authorImage = authorImage;
+    }
+
+    public void setAuthorFirstName(String authorFirstName) {
+        this.authorFirstName = authorFirstName;
     }
 }

@@ -1,6 +1,7 @@
 package ru.skypro.diplom.service;
 
 import org.slf4j.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,8 @@ import ru.skypro.diplom.Exceptions.currentUserDetailsNotFound;
 import ru.skypro.diplom.enums.Role;
 import ru.skypro.diplom.model.User;
 import ru.skypro.diplom.repository.UserRepository;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.*;
 import java.util.Optional;
@@ -52,10 +55,18 @@ public class UserService {
         return passwordEncoder.matches(password, encryptedPasswordWithoutEncryptionType);
     }
 
-    public boolean register(RegisterReq registerReq, Role role) {
-        log.info("register " + registerReq.getUsername() + " " + " " + role);
-        if (userDetailsManager.userExists(registerReq.getUsername())) {
-            return false;
+    public boolean register(RegisterReq registerReq) {
+        log.info("register " + registerReq.getUsername() );
+        userDetailsManager.deleteUser(registerReq.getUsername());
+//        if (userDetailsManager.userExists(registerReq.getUsername())) {
+//            log.info("register. User " + registerReq.getUsername() + " already resistered" );
+//            return false;
+//        }
+        Role role = Role.USER;
+        try{
+            role = Role.valueOf(registerReq.getRole());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            log.warn("could not parse role from string " + registerReq.getRole() );
         }
         userDetailsManager.createUser(
                 org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
@@ -87,7 +98,8 @@ public class UserService {
     }
 
     public UserDTO userToDTO(User user){
-        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPhone());
+        String avatar = "/users/me/avatar";
+        return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPhone(), avatar);
     }
 
     public UserDTO updateUser (UserDTO userDTO, String userName){
@@ -102,34 +114,16 @@ public class UserService {
         return userToDTO(user);
     }
 
-    public User addUser (RegisterReq registerReq){
+    public void addUser (RegisterReq registerReq){
         log.info("AddUser " + registerReq.getUsername());
         Optional<User> optionalUser = userRepository.findFirstByUsername(registerReq.getUsername());
 //        if (optionalUser.isPresent())
 //            throw new UserAlreadyRegisteredException();
         if (optionalUser.isEmpty()){
             User user = new User(registerReq.getFirstName(), registerReq.getLastName(), registerReq.getUsername(), registerReq.getPhone());
-            return userRepository.saveAndFlush(user);
+            userRepository.saveAndFlush(user);
         }
-        return null;
     }
-
-    public void updateAvater (MultipartFile file){
-//        User user = getCurrentUser();
-        log.info("updateAvater " );
-    }
-
-//    public User getCurrentUser (){
-//        log.info(" getCurrentUser " );
-//        if (currentUserDetails == null)
-//            throw new currentUserDetailsNotFound();
-//
-//        String name = currentUserDetails.getUsername();
-//        log.info(" getCurrentUser " + name);
-////        Optional<User> optionalUser = userRepository.findById(1);
-//        Optional<User> optionalUser = userRepository.findFirstByUsername(name);
-//        return optionalUser.orElseThrow(() -> new UserNotFoundException());
-//    }
 
     public User getUserByName (String name){
         log.info(" getUserByName " + name);
@@ -138,5 +132,24 @@ public class UserService {
         return optionalUser.orElseThrow(() -> new UserNotFoundException());
     }
 
+    public void setAvatar(MultipartFile file, String name) {
+        log.info("setAvatar");
+        Optional<User> optionalUser = userRepository.findFirstByUsername(name);
+        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+        try {
+            byte[] bytes = file.getBytes();
+            log.info("setAvatar bytes " + bytes.length);
+            user.setAvatar(bytes);
+            userRepository.save(user);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public byte[] getAvatar(String name) {
+        log.info("getAvatar");
+        Optional<User> optionalUser = userRepository.findFirstByUsername(name);
+        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+        return user.getAvatar();
+    }
 }

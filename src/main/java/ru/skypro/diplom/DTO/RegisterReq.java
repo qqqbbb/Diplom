@@ -11,14 +11,22 @@ public class RegisterReq {
     private String firstName;
     private String lastName;
     private String phone;
-    private Role role;
+    private String role;
+
+    public RegisterReq() {
+    }
+
+    public RegisterReq(String username, String password, String firstName, String lastName, String phone, String role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -37,8 +45,32 @@ public class RegisterReq {
         return phone;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

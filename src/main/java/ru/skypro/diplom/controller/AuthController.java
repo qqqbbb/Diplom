@@ -37,8 +37,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         LoggerFactory.getLogger(this.getClass()).info("register " + req.toString());
-        Role role = req.getRole() == null ? USER : req.getRole();
-        if (userService.register(req, role)) {
+        if (userService.register(req)) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

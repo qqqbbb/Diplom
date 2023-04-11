@@ -58,13 +58,21 @@ public class AdService {
         return new ResponseWrapperAds(adPreviews.size(), adPreviews);
     }
 
-    public AdPreview addAd(CreateAd createAd, MultipartFile file, String userName) {
+    public ResponseEntity addAd(CreateAd createAd, MultipartFile file, String userName) {
         log.info("addAd");
+        if (file.getSize() > 1024 * 1024)
+            return ResponseEntity.badRequest().body("File is too big");
+
+        String contentType = file.getContentType();
+//        System.out.println("addAd image contentType " + contentType);
+        if (contentType == null || !contentType.contains("image"))
+            return ResponseEntity.badRequest().body("Only images can be uploaded");
+
         User user = userService.getUserByName(userName);
         Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
         setImage(ad, file);
         adRepository.save(ad);
-        return adToDTO(ad);
+        return ResponseEntity.ok(adToDTO(ad));
     }
 
     public void setImage(Ad ad, MultipartFile file){
