@@ -4,6 +4,7 @@ import ru.skypro.diplom.Exceptions.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +14,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
     private String text;
     @ManyToOne
     private User user;
@@ -23,7 +24,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, LocalDate creationDate, String text, User user, Ad ad) {
+    public Comment(int id, LocalDateTime creationDate, String text, User user, Ad ad) {
         this.id = id;
         this.creationDate = creationDate;
         this.text = text;
@@ -59,7 +60,7 @@ public class Comment {
         return id;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

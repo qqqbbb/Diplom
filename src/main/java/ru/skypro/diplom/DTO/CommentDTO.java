@@ -1,12 +1,13 @@
 package ru.skypro.diplom.DTO;
 
 
+import java.time.LocalDateTime;
 
 public class CommentDTO {
 
     private int pk;
     private String text;
-    private String createdAt;
+    private long createdAt;
     private int author;
     private String authorImage;
     private String authorFirstName;
@@ -14,7 +15,7 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
-    public CommentDTO(int pk, String text, String createdAt, int author, String authorImage, String authorFirstName) {
+    public CommentDTO(int pk, String text, long createdAt, int author, String authorImage, String authorFirstName) {
         this.pk = pk;
         this.text = text;
         this.createdAt = createdAt;
@@ -31,7 +32,7 @@ public class CommentDTO {
         return text;
     }
 
-    public String getCreationDate() {
+    public long  getCreationDate() {
         return createdAt;
     }
 
@@ -55,7 +56,7 @@ public class CommentDTO {
         this.text = text;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(long  createdAt) {
         this.createdAt = createdAt;
     }
 

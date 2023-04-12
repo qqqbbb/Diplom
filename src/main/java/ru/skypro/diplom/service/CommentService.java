@@ -8,7 +8,8 @@ import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.*;
-import java.time.LocalDate;
+
+import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
@@ -42,20 +43,33 @@ public class CommentService {
         return null;
     }
 
+    public LocalDateTime longToLocalDateTime(long dateTime) {
+        LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime),
+                        TimeZone.getDefault().toZoneId());
+        return triggerTime;
+    }
+
+    public long localDateTimeToLong(LocalDateTime dateTime) {
+        ZonedDateTime zdt = ZonedDateTime.of(dateTime, ZoneId.systemDefault());
+        long date = zdt.toInstant().toEpochMilli();
+        return date;
+    }
+
     public Comment dtoToComment(CommentDTO dto, int adId) {
         log.info("dtoToComment " + adId);
         log.info("dtoToComment dto.getAuthorId " + dto.getAuthorId());
         User user = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new UserNotFoundException());
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
-        LocalDate localDate = parseDate(dto.getCreationDate());
-        Optional<Comment> optionalComment = commentRepository.findById(dto.getId());
-        return optionalComment.orElse(new Comment(dto.getId(), localDate, dto.getText(), user, ad));
+        LocalDateTime localDateTime = longToLocalDateTime(dto.getCreationDate());
+//        Optional<Comment> optionalComment = commentRepository.findById(dto.getId());
+        return new Comment(dto.getId(), localDateTime, dto.getText(), user, ad);
     }
 
     public CommentDTO commentToDTO(Comment comment) {
         log.info("commentToDTO");
         User user = comment.getUser();
-        return new CommentDTO(comment.getId(), comment.getText(), comment.getCreationDate().toString(), user.getId(), null, user.getFirstName());
+        long time = localDateTimeToLong(comment.getCreationDate());
+        return new CommentDTO(comment.getId(), comment.getText(), time, user.getId(), null, user.getFirstName());
     }
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId, Authentication authentication) {
@@ -69,6 +83,7 @@ public class CommentService {
         return commentDTO;
     }
 
+    // fix
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, Authentication authentication) {
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
