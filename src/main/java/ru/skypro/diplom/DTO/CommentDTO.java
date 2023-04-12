@@ -70,4 +70,16 @@ public class CommentDTO {
     public void setAuthorFirstName(String authorFirstName) {
         this.authorFirstName = authorFirstName;
     }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" +
+                "pk=" + pk +
+                ", text='" + text + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", author=" + author +
+                ", authorImage='" + authorImage + '\'' +
+                ", authorFirstName='" + authorFirstName + '\'' +
+                '}';
+    }
 }

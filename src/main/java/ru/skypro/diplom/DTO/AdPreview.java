@@ -1,7 +1,7 @@
 package ru.skypro.diplom.DTO;
 
 public class AdPreview {
-    private int id;
+    private int pk;
     private String title;
     private int author;
     private int price;
@@ -10,16 +10,16 @@ public class AdPreview {
     public AdPreview() {
     }
 
-    public AdPreview(int id, String title, int author, int price, String image) {
-        this.id = id;
+    public AdPreview(int pk, String title, int author, int price, String image) {
+        this.pk = pk;
         this.title = title;
         this.author = author;
         this.price = price;
         this.image = image;
     }
 
-    public int getId() {
-        return id;
+    public int getPk() {
+        return pk;
     }
 
     public String getTitle() {
@@ -38,8 +38,8 @@ public class AdPreview {
         return image;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPk(int pk) {
+        this.pk = pk;
     }
 
     public void setTitle(String title) {

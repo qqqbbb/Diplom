@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.skypro.diplom.enums.Role;
 
+import java.util.List;
+
 import static ru.skypro.diplom.enums.Role.USER;
 
 

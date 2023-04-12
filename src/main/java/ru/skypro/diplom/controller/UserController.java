@@ -3,7 +3,10 @@ package ru.skypro.diplom.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
@@ -28,16 +31,12 @@ public class UserController {
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword, Authentication authentication) {
         log.info("set_password " );
-        if (authentication == null)
-            log.info("set_password authentication == null" );
-        else
-            log.info("set_password authentication getName " + authentication.getName() );
-
+        log.info("set_password authentication getName " + authentication.getName() );
         log.info("set_password currentPassword  " + newPassword.currentPassword );
         log.info("set_password newPassword " + newPassword.newPassword );
         authService.changePassword(
                         newPassword.getCurrentPassword(),
-                        newPassword.getNewPassword());
+                        newPassword.getNewPassword(), authentication);
         return ResponseEntity.ok().build();
     }
 
@@ -48,15 +47,13 @@ public class UserController {
     }
 
     @PatchMapping ("/me")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
+        // userDTO.getEmail is null
         log.info("updateUser");
-        if (userDTO == null)
-            log.info("updateUser userDTO == null");
-        else
-            log.info("updateUser " + userDTO.getEmail() + " " + userDTO.getFirstName());
-
+        log.info("updateUser userDTO userName " + userDTO.getEmail() + " " + userDTO.getFirstName());
         log.info("updateUser authentication.getName " + authentication.getName());
-        UserDTO updatedDTO = userService.updateUser(userDTO, authentication.getName());
+        UserDTO updatedDTO = userService.updateUser(userDTO, authentication);
         return ResponseEntity.ok(updatedDTO);
     }
 
@@ -71,7 +68,7 @@ public class UserController {
         if (contentType == null || !contentType.contains("image"))
             return ResponseEntity.badRequest().body("Only images can be uploaded");
 
-        userService.setAvatar(file, authentication.getName());
+        userService.setAvatar(file, authentication);
         return ResponseEntity.ok().build();
     }
 

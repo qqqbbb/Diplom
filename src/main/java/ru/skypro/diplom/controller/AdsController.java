@@ -24,9 +24,9 @@ public class AdsController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> addAd( @RequestPart(value = "image") MultipartFile file, @RequestPart(value = "properties") CreateAd createAd, Authentication authentication) throws IOException {
+    public ResponseEntity<?> addAd( @RequestPart(value = "image") MultipartFile file, @RequestPart(value = "properties") CreateAd createAd, Authentication authentication) {
         log.info("addAd");
-        return adService.addAd(createAd, file, authentication.getName());
+        return adService.addAd(createAd, file, authentication);
     }
 
     @GetMapping
@@ -45,14 +45,14 @@ public class AdsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAd(@PathVariable int id, Authentication authentication) {
         log.info("deleteAd");
-        adService.deleteAd(id, authentication.getName());
+        adService.deleteAd(id, authentication);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd, Authentication authentication) {
         log.info("updateAd");
-        adService.updateAd(createAd, id, authentication.getName());
+        adService.updateAd(createAd, id, authentication);
         return ResponseEntity.ok().build();
     }
 
@@ -69,9 +69,9 @@ public class AdsController {
     }
 
     @PatchMapping(value ="/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) throws IOException {
+    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) {
         log.info("updateImage " + id);
-        adService.updateAdImage(id, file, authentication.getName());
+        adService.updateAdImage(id, file, authentication);
         return ResponseEntity.ok().build();
     }
 
@@ -83,9 +83,9 @@ public class AdsController {
     }
 
     @PostMapping("/{adId}/comments")
-    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId) {
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId, Authentication authentication) {
         log.info("addComment " + adId);
-        commentService.addComment(commentDTO, adId);
+        commentService.addComment(commentDTO, adId, authentication);
         return ResponseEntity.ok().build();
     }
 
@@ -98,14 +98,14 @@ public class AdsController {
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId, Authentication authentication) {
         log.info("deleteComment " + commentId);
-        commentService.deleteComment(adId, commentId, authentication.getName());
+        commentService.deleteComment(adId, commentId, authentication);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable int commentId, @PathVariable int adId, @RequestBody CommentDTO commentDTO, Authentication authentication) {
         log.info("updateComment " + commentId);
-        CommentDTO commentDTO1 = commentService.updateComment(commentId, adId, commentDTO, authentication.getName());
+        CommentDTO commentDTO1 = commentService.updateComment(commentId, adId, commentDTO, authentication);
         return ResponseEntity.ok(commentDTO1);
     }
 

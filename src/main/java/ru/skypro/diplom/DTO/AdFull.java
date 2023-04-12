@@ -1,7 +1,7 @@
 package ru.skypro.diplom.DTO;
 
 public class AdFull {
-    private int id;
+    private int pk;
     private String title;
     private String authorFirstName;
     private String authorLastName;
@@ -14,8 +14,8 @@ public class AdFull {
     public AdFull() {
     }
 
-    public AdFull(int id, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
-        this.id = id;
+    public AdFull(int pk, String title, String authorFirstName, String authorLastName, String description, String email, String phone, int price, String image) {
+        this.pk = pk;
         this.title = title;
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
@@ -26,8 +26,8 @@ public class AdFull {
         this.image = image;
     }
 
-    public int getId() {
-        return id;
+    public int getPk() {
+        return pk;
     }
 
     public String getTitle() {
@@ -62,8 +62,8 @@ public class AdFull {
         return image;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPk(int pk) {
+        this.pk = pk;
     }
 
     public void setTitle(String title) {
