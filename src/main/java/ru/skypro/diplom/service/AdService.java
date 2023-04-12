@@ -114,9 +114,9 @@ public class AdService {
         adRepository.deleteById(id);
     }
 
-    public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(String userName) {
+    public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds ");
-        User user = userService.getUserByName(userName);
+        User user = userService.getUserByName(authentication.getName());
         List<Ad> ads = adRepository.findAllByUser(user);
         List<AdPreview> adPreviews = new ArrayList<>();
         for (Ad ad: ads) {

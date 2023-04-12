@@ -59,7 +59,7 @@ public class AdsController {
     @GetMapping("/me")
     public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds");
-        return adService.getCurrentUserAds(authentication.getName());
+        return adService.getCurrentUserAds(authentication);
     }
 
     @GetMapping(value ="/{id}/image", produces = {MediaType.IMAGE_PNG_VALUE})

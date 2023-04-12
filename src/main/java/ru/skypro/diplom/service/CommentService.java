@@ -44,15 +44,16 @@ public class CommentService {
     }
 
     public LocalDateTime longToLocalDateTime(long dateTime) {
+        log.info("longToLocalDateTime");
         LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime),
                         TimeZone.getDefault().toZoneId());
         return triggerTime;
     }
 
     public long localDateTimeToLong(LocalDateTime dateTime) {
+        log.info("localDateTimeToLong");
         ZonedDateTime zdt = ZonedDateTime.of(dateTime, ZoneId.systemDefault());
-        long date = zdt.toInstant().toEpochMilli();
-        return date;
+        return zdt.toInstant().toEpochMilli();
     }
 
     public Comment dtoToComment(CommentDTO dto, int adId) {
@@ -83,13 +84,13 @@ public class CommentService {
         return commentDTO;
     }
 
-    // fix
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, Authentication authentication) {
+        log.info("updateComment " + commentId);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
         authService.isAuthorized(user, authentication);
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CommentNotFoundException());
-        comment = dtoToComment(commentDTO, adId);
+        comment.setText(commentDTO.getText());
         commentRepository.save(comment);
         return commentDTO;
     }
@@ -109,7 +110,7 @@ public class CommentService {
     }
 
     public ResponseEntity<CommentDTO> getComment(int adId, int commentId) {
-        log.info("getComment ");
+        log.info("getComment " + commentId);
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         List<Comment> comments = commentRepository.findAllByAd(ad);
@@ -121,6 +122,7 @@ public class CommentService {
     }
 
     public void deleteComment(int adId, int commentId, Authentication authentication) {
+        log.info("deleteComment " + commentId);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
         authService.isAuthorized(user, authentication);
