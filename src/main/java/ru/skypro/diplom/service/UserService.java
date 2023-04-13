@@ -106,13 +106,17 @@ public class UserService {
     }
 
     public byte[] getAvatar(String name) {
-        log.info("getAvatar");
+        log.info("getAvatar " + name);
         Optional<User> optionalUser = userRepository.findFirstByUsername(name);
         User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
         return user.getAvatar();
     }
 
-
+    public byte[] getAvatar(int id) {
+        log.info("getAvatar " + id);
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        return user.getAvatar();
+    }
 
 
 }

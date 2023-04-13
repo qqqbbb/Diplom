@@ -80,4 +80,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getAvatar(authentication.getName()));
     }
 
+    @GetMapping(value ="/{id}/avatar", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getAvatarById(@PathVariable int id) {
+        log.info("getAvatarById " );
+        return ResponseEntity.ok(userService.getAvatar(id));
+    }
+
+
 }

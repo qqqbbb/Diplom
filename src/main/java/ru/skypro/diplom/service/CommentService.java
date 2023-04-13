@@ -75,7 +75,8 @@ public class CommentService {
         log.info("commentToDTO");
         User user = comment.getUser();
         long time = localDateTimeToLong(comment.getCreationDate());
-        return new CommentDTO(comment.getId(), comment.getText(), time, user.getId(), null, user.getFirstName());
+        String avatar = "/users/" + user.getId() + "/avatar";
+        return new CommentDTO(comment.getId(), comment.getText(), time, user.getId(), avatar, user.getFirstName());
     }
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId, Authentication authentication) {
@@ -106,25 +107,15 @@ public class CommentService {
         log.info("getComments " + adId);
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+//        log.info("getComments ad getUsername " + ad.getUser().getUsername());
         List<Comment> comments = commentRepository.findAllByAd(ad);
         List<CommentDTO> commentDTOs = new ArrayList<>();
         for (Comment comment : comments) {
+//            log.info("getComments comment getUsername " + comment.getUser().getUsername());
             CommentDTO commentDTO = commentToDTO(comment);
             commentDTOs.add(commentDTO);
         }
         return new ResponseWrapperComment(commentDTOs.size(), commentDTOs);
-    }
-
-    public ResponseEntity<CommentDTO> getComment(int adId, int commentId) {
-        log.info("getComment " + commentId);
-        Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
-        List<Comment> comments = commentRepository.findAllByAd(ad);
-        for (Comment c : comments) {
-            if (c.getId() == commentId)
-                return ResponseEntity.ok(commentToDTO(c));
-        }
-        throw new CommentNotFoundException();
     }
 
     public void deleteComment(int adId, int commentId, Authentication authentication) {

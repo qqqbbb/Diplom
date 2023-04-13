@@ -32,13 +32,6 @@ public class AdService {
         this.commentRepository = commentRepository;
     }
 
-//    public AdFull getFullAd(Ad ad) {
-//        log.info("getFullAd");
-//        User user = userService.getUserByName();
-//        String image = "Ads/" + ad.getId() + "/image";
-//        return new AdFull(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getUsername(), user.getPhone(), ad.getPrice(), image);
-//    }
-
     public AdPreview adToDTO(Ad ad) {
         String image = "/ads/" + ad.getId() + "/image";
         return new AdPreview(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice(), image);
