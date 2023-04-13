@@ -10,6 +10,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
+import ru.skypro.diplom.model.User;
 import ru.skypro.diplom.service.*;
 
 import java.io.IOException;
@@ -41,9 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getUser(Authentication authentication) {
+    public ResponseEntity<UserDTO> getUser(Authentication authentication) {
         log.info("getUser");
-        return ResponseEntity.ok(userService.getUserByName(authentication.getName()));
+        User user = userService.getUserByName(authentication.getName());
+        return ResponseEntity.ok(userService.userToDTO(user));
     }
 
     @PatchMapping ("/me")

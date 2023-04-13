@@ -63,10 +63,7 @@ public class UserService {
         String userName = authentication.getName();
         log.info("updateUser " + userName);
         log.info("updateUser equals " + userName.equals(userDTO.getEmail()));
-//        if (!userName.equals(userDTO.getEmail()))
-//            throw new NotAuthorizedUserActionException();
-        Optional<User> optionalUser = userRepository.findFirstByUsername(userName);
-        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findFirstByUsername(userName).orElseThrow(() -> new UserNotFoundException());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setPhone(userDTO.getPhone());
@@ -94,9 +91,9 @@ public class UserService {
 
     public void setAvatar(MultipartFile file, Authentication authentication) {
         log.info("setAvatar");
-        authService.isAuthorized(authentication);
-        Optional<User> optionalUser = userRepository.findFirstByUsername(authentication.getName());
-        User user = optionalUser.orElseThrow(() -> new UserNotFoundException());
+        boolean isAuthorized = authService.isAuthorized(authentication);
+        log.info("setAvatar isAuthorized " + isAuthorized);
+        User user = userRepository.findFirstByUsername(authentication.getName()).orElseThrow(() -> new UserNotFoundException());
         try {
             byte[] bytes = file.getBytes();
             log.info("setAvatar bytes " + bytes.length);

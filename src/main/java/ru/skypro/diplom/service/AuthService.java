@@ -5,14 +5,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.diplom.DTO.RegisterReq;
-import ru.skypro.diplom.Exceptions.NotAuthorizedUserActionException;
-import ru.skypro.diplom.Exceptions.UserNotFoundException;
-import ru.skypro.diplom.Exceptions.currentUserDetailsNotFound;
-import ru.skypro.diplom.WebSecurityConfig;
+import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.enums.Role;
 import ru.skypro.diplom.repository.UserRepository;
 
@@ -97,9 +93,6 @@ public class AuthService {
         if (!userDetailsManager.userExists(user.getUsername()))
             throw new UserNotFoundException();
 
-        if (user.getUsername().equals(authentication.getName()))
-            return true;
-
         String role = authentication.getAuthorities().stream().findFirst()
                 .map(authority -> authority.getAuthority())
                 .orElse(null);
@@ -117,6 +110,9 @@ public class AuthService {
         }
 //            log.info("isAuthorized roleEnum " + roleEnum);
         if (roleEnum == Role.ADMIN)
+            return true;
+
+        if (user.getUsername().equals(authentication.getName()))
             return true;
 
         log.info("isAuthorized NotAuthorizedUserActionException ");

@@ -32,6 +32,13 @@ public class Comment {
         this.ad = ad;
     }
 
+    public Comment (LocalDateTime creationDate, String text, User user, Ad ad) {
+        this.creationDate = creationDate;
+        this.text = text;
+        this.user = user;
+        this.ad = ad;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +

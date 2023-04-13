@@ -50,10 +50,15 @@ public class CommentService {
         return triggerTime;
     }
 
-    public long localDateTimeToLong(LocalDateTime dateTime) {
+//    public long localDateTimeToLong(LocalDateTime dateTime) {
+//        log.info("localDateTimeToLong");
+//        ZonedDateTime zdt = ZonedDateTime.of(dateTime, ZoneId.systemDefault());
+//        return zdt.toInstant().toEpochMilli();
+//    }
+
+    public long localDateTimeToLong(LocalDateTime localDateTime) {
         log.info("localDateTimeToLong");
-        ZonedDateTime zdt = ZonedDateTime.of(dateTime, ZoneId.systemDefault());
-        return zdt.toInstant().toEpochMilli();
+        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     public Comment dtoToComment(CommentDTO dto, int adId) {
@@ -75,27 +80,29 @@ public class CommentService {
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId, Authentication authentication) {
         log.info("addComment " + adId);
-        log.info("addComment commentDTO " + commentDTO);
+//        log.info("addComment commentDTO " + commentDTO);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
+        User user = ad.getUser();
         boolean isAuthorized = authService.isAuthorized(authentication);
         log.info("addComment isAuthorized " + isAuthorized);
-        Comment comment = dtoToComment(commentDTO, adId);
+        Comment comment = new Comment(LocalDateTime.now(), commentDTO.getText(), user, ad);
         commentRepository.save(comment);
-        return commentDTO;
+        return commentToDTO(comment);
     }
 
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, Authentication authentication) {
         log.info("updateComment " + commentId);
+        log.info("updateComment commentDTO " + commentDTO);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
         authService.isAuthorized(user, authentication);
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CommentNotFoundException());
         comment.setText(commentDTO.getText());
         commentRepository.save(comment);
-        return commentDTO;
+        return commentToDTO(comment);
     }
 
-    public ResponseEntity<ResponseWrapperComment> getComments(int adId) {
+    public ResponseWrapperComment getComments(int adId) {
         log.info("getComments " + adId);
         Optional<Ad> optionalAd = adRepository.findById(adId);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
@@ -105,8 +112,7 @@ public class CommentService {
             CommentDTO commentDTO = commentToDTO(comment);
             commentDTOs.add(commentDTO);
         }
-        ResponseWrapperComment rwc = new ResponseWrapperComment(commentDTOs.size(), commentDTOs);
-        return ResponseEntity.ok(rwc);
+        return new ResponseWrapperComment(commentDTOs.size(), commentDTOs);
     }
 
     public ResponseEntity<CommentDTO> getComment(int adId, int commentId) {
@@ -122,11 +128,12 @@ public class CommentService {
     }
 
     public void deleteComment(int adId, int commentId, Authentication authentication) {
-        log.info("deleteComment " + commentId);
+        log.info("delete single Comment " + commentId);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
         authService.isAuthorized(user, authentication);
         commentRepository.deleteById(commentId);
     }
+
 
 }

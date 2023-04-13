@@ -38,9 +38,9 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         LoggerFactory.getLogger(this.getClass()).info("register " + req.toString());
         if (authService.register(req)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

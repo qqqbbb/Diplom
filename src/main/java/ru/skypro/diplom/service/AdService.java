@@ -1,6 +1,7 @@
 package ru.skypro.diplom.service;
 
 import org.slf4j.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,15 @@ public class AdService {
     private final AdRepository adRepository;
     private final UserService userService;
     private final AuthService authService;
+    private final CommentRepository commentRepository;
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public AdService(AdRepository adRepository, UserService userService, AuthService authService) {
+    public AdService(AdRepository adRepository, UserService userService, AuthService authService, CommentRepository commentRepository) {
         this.adRepository = adRepository;
         this.userService = userService;
         this.authService = authService;
+        this.commentRepository = commentRepository;
     }
 
 //    public AdFull getFullAd(Ad ad) {
@@ -61,7 +65,8 @@ public class AdService {
 
     public ResponseEntity addAd(CreateAd createAd, MultipartFile file, Authentication authentication) {
         log.info("addAd");
-        authService.isAuthorized(authentication);
+        boolean isAuthorized = authService.isAuthorized(authentication);
+        log.info("addAd isAuthorized " + isAuthorized);
         if (file.getSize() > 1024 * 1024)
             return ResponseEntity.badRequest().body("File is too big");
 
@@ -74,7 +79,7 @@ public class AdService {
         Ad ad = new Ad(createAd.getTitle(), createAd.getDescription(), createAd.getPrice(), user);
         setImage(ad, file);
         adRepository.save(ad);
-        return ResponseEntity.ok(adToDTO(ad));
+        return ResponseEntity.status(HttpStatus.CREATED).body(adToDTO(ad));
     }
 
     public void setImage(Ad ad, MultipartFile file){
@@ -110,30 +115,39 @@ public class AdService {
         log.info("deleteAd " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
-        authService.isAuthorized(ad.getUser(), authentication);
+        boolean isAuthorized = authService.isAuthorized(ad.getUser(), authentication);
+        log.info("deleteAd isAuthorized " + isAuthorized);
+        List<Comment> comments = commentRepository.findAllByAd(ad);
+        log.info("deleteAd comments found " + comments.size());
+        for (Comment c: comments) {
+            commentRepository.delete(c);
+        }
+//        commentRepository.deleteAllByAd(ad);
+        comments = commentRepository.findAllByAd(ad);
+        log.info("deleteAd comments found after " + comments.size());
         adRepository.deleteById(id);
     }
 
-    public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(Authentication authentication) {
+    public ResponseWrapperAds getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds ");
+        authService.isAuthorized(authentication);
         User user = userService.getUserByName(authentication.getName());
         List<Ad> ads = adRepository.findAllByUser(user);
         List<AdPreview> adPreviews = new ArrayList<>();
         for (Ad ad: ads) {
-            AdPreview adPreview = adToDTO(ad);
-            adPreviews.add(adPreview);
+            adPreviews.add(adToDTO(ad));
         }
-        return ResponseEntity.ok(new ResponseWrapperAds(ads.size(), adPreviews));
+        return new ResponseWrapperAds(ads.size(), adPreviews);
     }
 
-    public ResponseEntity<?> updateAdImage(int adId, MultipartFile file, Authentication authentication) {
+    public byte[] updateAdImage(int adId, MultipartFile file, Authentication authentication) {
         log.info("updateAdImage ");
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
         User user = ad.getUser();
         authService.isAuthorized(user, authentication);
         setImage(ad, file);
         adRepository.saveAndFlush(ad);
-        return ResponseEntity.ok().build();
+        return ad.getImage();
     }
 
     public ResponseEntity<byte[]> getImage(int id) {

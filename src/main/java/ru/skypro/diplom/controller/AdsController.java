@@ -8,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.service.*;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("ads")
 @CrossOrigin(value = "http://localhost:3000")
@@ -24,7 +22,7 @@ public class AdsController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> addAd( @RequestPart(value = "image") MultipartFile file, @RequestPart(value = "properties") CreateAd createAd, Authentication authentication) {
+    public ResponseEntity<?> postAd(@RequestPart(value = "image") MultipartFile file, @RequestPart(value = "properties") CreateAd createAd, Authentication authentication) {
         log.info("addAd");
         return adService.addAd(createAd, file, authentication);
     }
@@ -46,20 +44,20 @@ public class AdsController {
     public ResponseEntity<?> deleteAd(@PathVariable int id, Authentication authentication) {
         log.info("deleteAd");
         adService.deleteAd(id, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAd(@PathVariable int id, @RequestBody CreateAd createAd, Authentication authentication) {
+    public ResponseEntity<AdPreview> updateAd(@PathVariable int id, @RequestBody CreateAd createAd, Authentication authentication) {
         log.info("updateAd");
-        adService.updateAd(createAd, id, authentication);
-        return ResponseEntity.ok().build();
+        AdPreview adPreview = adService.updateAd(createAd, id, authentication);
+        return ResponseEntity.ok(adPreview);
     }
 
     @GetMapping("/me")
     public ResponseEntity<ResponseWrapperAds> getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds");
-        return adService.getCurrentUserAds(authentication);
+        return ResponseEntity.ok(adService.getCurrentUserAds(authentication));
     }
 
     @GetMapping(value ="/{id}/image", produces = {MediaType.IMAGE_PNG_VALUE})
@@ -69,31 +67,30 @@ public class AdsController {
     }
 
     @PatchMapping(value ="/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) {
+    public ResponseEntity<byte[]> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) {
         log.info("updateImage " + id);
-        adService.updateAdImage(id, file, authentication);
-        return ResponseEntity.ok().build();
+        byte[] image = adService.updateAdImage(id, file, authentication);
+        return ResponseEntity.ok(image);
     }
 
-    @GetMapping("/{adId}/comments")
-    public ResponseEntity<ResponseWrapperComment> getComments(@PathVariable int adId) {
-        log.info("getComments ");
-        log.info("getComments " + adId);
-        return commentService.getComments(adId);
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<ResponseWrapperComment> getComments(@PathVariable int id) {
+        log.info("getComments " + id);
+        return ResponseEntity.ok(commentService.getComments(id));
     }
 
-    @PostMapping("/{adId}/comments")
-    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int adId, Authentication authentication) {
-        log.info("addComment " + adId);
-        commentService.addComment(commentDTO, adId, authentication);
-        return ResponseEntity.ok().build();
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int id, Authentication authentication) {
+        log.info("addComment " + id);
+        log.info("addComment commentDTO " + commentDTO);
+        return ResponseEntity.ok(commentService.addComment(commentDTO, id, authentication));
     }
 
-    @GetMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> getComment(@PathVariable int adId, @PathVariable int commentId) {
-        log.info("getComment " + commentId);
-        return commentService.getComment(adId, commentId);
-    }
+//    @GetMapping("/{adId}/comments/{commentId}")
+//    public ResponseEntity<CommentDTO> getComment(@PathVariable int adId, @PathVariable int commentId) {
+//        log.info("getComment " + commentId);
+//        return commentService.getComment(adId, commentId);
+//    }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId, Authentication authentication) {
