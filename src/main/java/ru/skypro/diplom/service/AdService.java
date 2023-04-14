@@ -11,6 +11,7 @@ import ru.skypro.diplom.Exceptions.*;
 import ru.skypro.diplom.model.*;
 import ru.skypro.diplom.repository.*;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
 
@@ -104,20 +105,14 @@ public class AdService {
         return adToFullDTO(ad);
     }
 
+    @Transactional
     public void deleteAd(int id, Authentication authentication) {
         log.info("deleteAd " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
         Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
         boolean isAuthorized = authService.isAuthorized(ad.getUser(), authentication);
         log.info("deleteAd isAuthorized " + isAuthorized);
-        List<Comment> comments = commentRepository.findAllByAd(ad);
-        log.info("deleteAd comments found " + comments.size());
-        for (Comment c: comments) {
-            commentRepository.delete(c);
-        }
-//        commentRepository.deleteAllByAd(ad);
-        comments = commentRepository.findAllByAd(ad);
-        log.info("deleteAd comments found after " + comments.size());
+        commentRepository.deleteAllByAd(ad);
         adRepository.deleteById(id);
     }
 

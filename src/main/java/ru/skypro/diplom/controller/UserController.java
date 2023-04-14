@@ -82,7 +82,7 @@ public class UserController {
 
     @GetMapping(value ="/{id}/avatar", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getAvatarById(@PathVariable int id) {
-        log.info("getAvatarById " );
+        log.info("getAvatarById " + id);
         return ResponseEntity.ok(userService.getAvatar(id));
     }
 

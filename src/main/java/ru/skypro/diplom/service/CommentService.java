@@ -29,32 +29,12 @@ public class CommentService {
         this.authService = authService;
     }
 
-    public LocalDate parseDate(String date) {
-        try {
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-//            return LocalDate.parse(date.substring(0, 16), formatter);
-            return LocalDate.parse(date);
-        }
-        catch (DateTimeParseException e)
-        {
-            log.error("Unable to parse date: " + date);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public LocalDateTime longToLocalDateTime(long dateTime) {
         log.info("longToLocalDateTime");
-        LocalDateTime triggerTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(dateTime),
-                        TimeZone.getDefault().toZoneId());
-        return triggerTime;
+        Instant instant = Instant.ofEpochMilli(dateTime);
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+        return zonedDateTime.toLocalDateTime();
     }
-
-//    public long localDateTimeToLong(LocalDateTime dateTime) {
-//        log.info("localDateTimeToLong");
-//        ZonedDateTime zdt = ZonedDateTime.of(dateTime, ZoneId.systemDefault());
-//        return zdt.toInstant().toEpochMilli();
-//    }
 
     public long localDateTimeToLong(LocalDateTime localDateTime) {
         log.info("localDateTimeToLong");
@@ -76,15 +56,17 @@ public class CommentService {
         User user = comment.getUser();
         long time = localDateTimeToLong(comment.getCreationDate());
         String avatar = "/users/" + user.getId() + "/avatar";
-        return new CommentDTO(comment.getId(), comment.getText(), time, user.getId(), avatar, user.getFirstName());
+        CommentDTO commentDTO = new CommentDTO(comment.getId(), comment.getText(), time, user.getId(), avatar, user.getFirstName());
+        log.info("commentToDTO " + commentDTO);
+        return commentDTO;
     }
 
     public CommentDTO addComment(CommentDTO commentDTO, int adId, Authentication authentication) {
         log.info("addComment " + adId);
-//        log.info("addComment commentDTO " + commentDTO);
-        Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
-        User user = ad.getUser();
+        log.info("addComment commentDTO " + commentDTO);
         boolean isAuthorized = authService.isAuthorized(authentication);
+        Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
+        User user = userRepository.findFirstByUsername(authentication.getName()).orElseThrow(()-> new UserNotFoundException());
         log.info("addComment isAuthorized " + isAuthorized);
         Comment comment = new Comment(LocalDateTime.now(), commentDTO.getText(), user, ad);
         commentRepository.save(comment);
@@ -94,10 +76,9 @@ public class CommentService {
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, Authentication authentication) {
         log.info("updateComment " + commentId);
         log.info("updateComment commentDTO " + commentDTO);
-        Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
-        User user = ad.getUser();
-        authService.isAuthorized(user, authentication);
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CommentNotFoundException());
+        User user = comment.getUser();
+        authService.isAuthorized(user, authentication);
         comment.setText(commentDTO.getText());
         commentRepository.save(comment);
         return commentToDTO(comment);
@@ -105,8 +86,7 @@ public class CommentService {
 
     public ResponseWrapperComment getComments(int adId) {
         log.info("getComments " + adId);
-        Optional<Ad> optionalAd = adRepository.findById(adId);
-        Ad ad = optionalAd.orElseThrow(() -> new AdNotFoundException());
+        Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
 //        log.info("getComments ad getUsername " + ad.getUser().getUsername());
         List<Comment> comments = commentRepository.findAllByAd(ad);
         List<CommentDTO> commentDTOs = new ArrayList<>();
@@ -120,8 +100,8 @@ public class CommentService {
 
     public void deleteComment(int adId, int commentId, Authentication authentication) {
         log.info("delete single Comment " + commentId);
-        Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
-        User user = ad.getUser();
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CommentNotFoundException());
+        User user = comment.getUser();
         authService.isAuthorized(user, authentication);
         commentRepository.deleteById(commentId);
     }

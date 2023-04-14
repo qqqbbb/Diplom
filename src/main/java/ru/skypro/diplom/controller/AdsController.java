@@ -82,15 +82,8 @@ public class AdsController {
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, @PathVariable int id, Authentication authentication) {
         log.info("addComment " + id);
-        log.info("addComment commentDTO " + commentDTO);
         return ResponseEntity.ok(commentService.addComment(commentDTO, id, authentication));
     }
-
-//    @GetMapping("/{adId}/comments/{commentId}")
-//    public ResponseEntity<CommentDTO> getComment(@PathVariable int adId, @PathVariable int commentId) {
-//        log.info("getComment " + commentId);
-//        return commentService.getComment(adId, commentId);
-//    }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId, Authentication authentication) {
