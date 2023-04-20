@@ -67,42 +67,36 @@ public class Comment {
         return id;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public User getUser() {
-        if (user == null)
-            throw new UserNotFoundException();
-
-        return user;
-    }
-
-    public Ad getAd() {
-        if (ad == null)
-            throw new AdNotFoundException();
-
-        return ad;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Ad getAd() {
+        return ad;
     }
 
     public void setAd(Ad ad) {

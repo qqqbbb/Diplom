@@ -16,12 +16,12 @@ public class NewPassword {
         return currentPassword;
     }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
-
     public void setCurrentPassword(String currentPassword) {
         this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
     }
 
     public void setNewPassword(String newPassword) {

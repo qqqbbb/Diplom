@@ -19,12 +19,12 @@ public class ResponseWrapperComment {
         return count;
     }
 
-    public List<CommentDTO> getResults() {
-        return results;
-    }
-
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public List<CommentDTO> getResults() {
+        return results;
     }
 
     public void setResults(List<CommentDTO> results) {

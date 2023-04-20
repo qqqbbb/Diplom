@@ -43,12 +43,12 @@ public class CommentService {
 
     public Comment dtoToComment(CommentDTO dto, int adId) {
         log.info("dtoToComment " + adId);
-        log.info("dtoToComment dto.getAuthorId " + dto.getAuthorId());
-        User user = userRepository.findById(dto.getAuthorId()).orElseThrow(() -> new UserNotFoundException());
+        log.info("dtoToComment dto.getAuthorId " + dto.getAuthor());
+        User user = userRepository.findById(dto.getAuthor()).orElseThrow(() -> new UserNotFoundException());
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
-        LocalDateTime localDateTime = longToLocalDateTime(dto.getCreationDate());
+        LocalDateTime localDateTime = longToLocalDateTime(dto.getCreatedAt());
 //        Optional<Comment> optionalComment = commentRepository.findById(dto.getId());
-        return new Comment(dto.getId(), localDateTime, dto.getText(), user, ad);
+        return new Comment(dto.getPk(), localDateTime, dto.getText(), user, ad);
     }
 
     public CommentDTO commentToDTO(Comment comment) {

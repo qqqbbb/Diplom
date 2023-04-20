@@ -6,8 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.diplom.enums.Role;
 import ru.skypro.diplom.DTO.*;
-import ru.skypro.diplom.service.AuthService;
-import ru.skypro.diplom.service.UserService;
+import ru.skypro.diplom.service.*;
 
 import static ru.skypro.diplom.enums.Role.*;
 
@@ -23,6 +22,13 @@ public class AuthController {
         this.userService = userService;
     }
 
+    /**
+     * Логин-метод
+     *
+     * @param req дто-объект, содержащий данные для входа
+     * @return код 200 - введенные данные верные, вход произведен;<p>
+     * код 403 - в ином случае
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq req) {
         LoggerFactory.getLogger(this.getClass()).info("login " + req.toString());
@@ -34,6 +40,12 @@ public class AuthController {
 
     }
 
+    /**
+     * Метод для регистрации нового пользователя
+     *
+     * @param req дто-объект, содержащий данные о новом пользователе
+     * @return код 201 - если пользователь был создан
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         LoggerFactory.getLogger(this.getClass()).info("register " + req.toString());

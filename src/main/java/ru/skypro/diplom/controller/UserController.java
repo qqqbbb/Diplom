@@ -29,6 +29,12 @@ public class UserController {
         this.authService = authService;
     }
 
+    /**
+     * Метод для смены пароля текущего пользователя
+     *
+     * @param newPassword дто-объект, содержащий старый и новый пароли
+     * @return код 200 - при удачном изменении пароля, код 403 - при введении неверного текущего пароля
+     */
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword, Authentication authentication) {
         log.info("set_password " );
@@ -41,6 +47,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Метод возвращает данные о пользователе
+     *
+     * @return данные о пользователе в виде дто-объекта {@link UserDTO}
+     */
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getUser(Authentication authentication) {
         log.info("getUser");
@@ -48,10 +59,14 @@ public class UserController {
         return ResponseEntity.ok(userService.userToDTO(user));
     }
 
+    /**
+     * Метод обновляет данные пользователя
+     *
+     * @param userDTO     дто-объект, содержащий данные для обновления пользователя
+     * @return данные о пользователе в виде дто-объекта {@link UserDTO}
+     */
     @PatchMapping ("/me")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
-        // userDTO.getEmail is null
         log.info("updateUser");
         log.info("updateUser userDTO userName " + userDTO.getEmail() + " " + userDTO.getFirstName());
         log.info("updateUser authentication.getName " + authentication.getName());
@@ -59,6 +74,12 @@ public class UserController {
         return ResponseEntity.ok(updatedDTO);
     }
 
+    /**
+     * Метод обновляет аватар пользователя
+     *
+     * @param file       аватар пользователя в виде {@link MultipartFile}
+     * @return код 200 - при удачном добавлении пользователя
+     */
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity updateUserAvatar(@RequestPart(value = "image") MultipartFile file, Authentication authentication) {
         log.info("updateUserAvatar");
@@ -80,6 +101,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getAvatar(authentication.getName()));
     }
 
+    /**
+     * Метод возвращает аватар пользователя
+     *
+     * @param id первичный ключ пользователя
+     * @return бинарные данные аватара пользователя
+     */
     @GetMapping(value ="/{id}/avatar", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getAvatarById(@PathVariable int id) {
         log.info("getAvatarById " + id);

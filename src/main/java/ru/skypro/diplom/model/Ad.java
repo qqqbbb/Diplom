@@ -26,49 +26,50 @@ public class Ad {
         this.description = description;
         this.price = price;
         this.user = user;
-//        this.image = image;
     }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
-    }
-
-    public String getDescriptione() {
-        return description;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public User getUser() {
-        if (user == null)
-            throw new UserNotFoundException();
-
-        return user;
-    }
-
-    public byte[] getImage() {
-        if (image == null || image.length == 0)
-            throw new ImageNotFoundException();
-
-        return image;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public byte[] getImage() {
+        return image;
     }
 
     public void setImage(byte[] image) {

@@ -24,48 +24,48 @@ public class CommentDTO {
         this.authorFirstName = authorFirstName;
     }
 
-    public int getId() {
+    public int getPk() {
         return pk;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public long  getCreationDate() {
-        return createdAt;
-    }
-
-    public int getAuthorId() {
-        return author;
-    }
-
-    public String getAuthorImage() {
-        return authorImage;
-    }
-
-    public String getAuthorFirstName() {
-        return authorFirstName;
     }
 
     public void setPk(int pk) {
         this.pk = pk;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
     }
 
-    public void setCreatedAt(long  createdAt) {
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getAuthor() {
+        return author;
     }
 
     public void setAuthor(int author) {
         this.author = author;
     }
 
+    public String getAuthorImage() {
+        return authorImage;
+    }
+
     public void setAuthorImage(String authorImage) {
         this.authorImage = authorImage;
+    }
+
+    public String getAuthorFirstName() {
+        return authorFirstName;
     }
 
     public void setAuthorFirstName(String authorFirstName) {

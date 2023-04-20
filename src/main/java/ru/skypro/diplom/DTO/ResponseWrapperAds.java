@@ -19,12 +19,12 @@ public class ResponseWrapperAds {
         return count;
     }
 
-    public List<AdPreview> getResults() {
-        return results;
-    }
-
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public List<AdPreview> getResults() {
+        return results;
     }
 
     public void setResults(List<AdPreview> results) {

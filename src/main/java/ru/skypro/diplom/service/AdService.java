@@ -42,7 +42,7 @@ public class AdService {
         log.info("adToFullDTO");
         User user = ad.getUser();
         String image = "/ads/" + ad.getId() + "/image";
-        AdFull adFull = new AdFull(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescriptione(), user.getUsername(), user.getPhone(), ad.getPrice(), image);
+        AdFull adFull = new AdFull(ad.getId(), ad.getTitle(), user.getFirstName(), user.getLastName(), ad.getDescription(), user.getUsername(), user.getPhone(), ad.getPrice(), image);
         return adFull;
     }
 
