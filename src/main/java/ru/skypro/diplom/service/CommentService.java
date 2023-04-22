@@ -29,6 +29,12 @@ public class CommentService {
         this.authService = authService;
     }
 
+    /**
+     * Преобразует long в LocalDateTime
+     *
+     * @param dateTime дата и время {@link long}
+     * @return дата и время {@link LocalDateTime}
+     */
     public LocalDateTime longToLocalDateTime(long dateTime) {
         log.info("longToLocalDateTime");
         Instant instant = Instant.ofEpochMilli(dateTime);
@@ -36,6 +42,12 @@ public class CommentService {
         return zonedDateTime.toLocalDateTime();
     }
 
+    /**
+     * Преобразует LocalDateTime в long
+     *
+     * @param localDateTime дата и время {@link LocalDateTime}
+     * @return дата и время {@link long}
+     */
     public long localDateTimeToLong(LocalDateTime localDateTime) {
         log.info("localDateTimeToLong");
         return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -51,6 +63,12 @@ public class CommentService {
         return new Comment(dto.getPk(), localDateTime, dto.getText(), user, ad);
     }
 
+    /**
+     * Преобразует Comment в CommentDTO
+     *
+     * @param comment комментарий {@link Comment}
+     * @return DTO {@link CommentDTO}
+     */
     public CommentDTO commentToDTO(Comment comment) {
         log.info("commentToDTO");
         User user = comment.getUser();
@@ -61,6 +79,13 @@ public class CommentService {
         return commentDTO;
     }
 
+    /**
+     * Добавляет и сохраняет новый комментарий
+     *
+     * @param commentDTO комментарий {@link CommentDTO}
+     * @param adId первичный ключ объявления
+     * @return комментарий {@link CommentDTO}
+     */
     public CommentDTO addComment(CommentDTO commentDTO, int adId, Authentication authentication) {
         log.info("addComment " + adId);
         log.info("addComment commentDTO " + commentDTO);
@@ -73,6 +98,14 @@ public class CommentService {
         return commentToDTO(comment);
     }
 
+    /**
+     * Обновляет комментарий
+     *
+     * @param commentDTO комментарий {@link CommentDTO}
+     * @param adId первичный ключ объявления
+     * @param commentId первичный ключ комментария
+     * @return комментарий {@link CommentDTO}
+     */
     public CommentDTO updateComment(int commentId, int adId, CommentDTO commentDTO, Authentication authentication) {
         log.info("updateComment " + commentId);
         log.info("updateComment commentDTO " + commentDTO);
@@ -84,6 +117,12 @@ public class CommentService {
         return commentToDTO(comment);
     }
 
+    /**
+     * Возвращает все комментарии для данного объявления
+     *
+     * @param adId первичный ключ объявления
+     * @return DTO комментарии {@link ResponseWrapperComment}
+     */
     public ResponseWrapperComment getComments(int adId) {
         log.info("getComments " + adId);
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
@@ -98,6 +137,12 @@ public class CommentService {
         return new ResponseWrapperComment(commentDTOs.size(), commentDTOs);
     }
 
+    /**
+     * Удаляет комментарий
+     *
+     * @param adId первичный ключ объявления
+     * @param commentId первичный ключ комментария
+     */
     public void deleteComment(int adId, int commentId, Authentication authentication) {
         log.info("delete single Comment " + commentId);
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CommentNotFoundException());

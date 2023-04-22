@@ -6,14 +6,36 @@ import java.util.Objects;
 @Entity()
 @Table(name = "Users")
 public class User {
-
+    /**
+     * Первичный ключ пользователя
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    /**
+     * Имя пользователя
+     */
     private String firstName;
+
+    /**
+     * Фамилия пользователя
+     */
     private String lastName;
+
+    /**
+     * логин пользователя
+     */
     private String username;
+
+    /**
+     * Телефон пользователя
+     */
     private String phone;
+
+    /**
+     * аватар пользователя
+     */
     private byte[] avatar;
 
     protected User() {

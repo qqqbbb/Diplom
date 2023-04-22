@@ -3,17 +3,12 @@ package ru.skypro.diplom.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.diplom.DTO.*;
 import ru.skypro.diplom.model.User;
 import ru.skypro.diplom.service.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("users")

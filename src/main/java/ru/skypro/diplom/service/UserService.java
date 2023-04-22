@@ -34,36 +34,39 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();;
     }
 
-    public LocalDate parseDate(String date) {
-        try {
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-//            return LocalDate.parse(date.substring(0, 16), formatter);
-            return LocalDate.parse(date);
-        }
-        catch (DateTimeParseException e)
-        {
-            log.error("Unable to parse date: " + date);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * Преобразует UserDTO в User
+     *
+     * @param userDTO пользователь  {@link UserDTO}
+     * @return пользователь {@link User}
+     */
     public User dtoToUser(UserDTO userDTO){
         return new User(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getPhone());
     }
 
+    /**
+     * Преобразует User в UserDTO
+     *
+     * @param user пользователь {@link User}
+     * @return пользователь {@link UserDTO}
+     */
     public UserDTO userToDTO(User user){
         String avatar = "/users/me/avatar";
         return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getPhone(), avatar);
     }
 
+    /**
+     * Обновляет данные о пользователе
+     *
+     * @param userDTO пользователь {@link UserDTO}
+     * @return пользователь {@link UserDTO}
+     */
     public UserDTO updateUser (UserDTO userDTO, Authentication authentication){
-        // userDTO.getEmail is null
-//        isAuthorized(userDTO.getEmail(), authentication);
         String userName = authentication.getName();
         log.info("updateUser " + userName);
-        log.info("updateUser equals " + userName.equals(userDTO.getEmail()));
+//        log.info("updateUser equals " + userName.equals(userDTO.getEmail()));
         User user = userRepository.findFirstByUsername(userName).orElseThrow(() -> new UserNotFoundException());
+        authService.isAuthorized(user, authentication);
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setPhone(userDTO.getPhone());
@@ -82,6 +85,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Возвращает пользователя по логину
+     *
+     * @param name логин пользователя {@link String}
+     * @return пользователь {@link User}
+     */
     public User getUserByName (String name){
         log.info(" getUserByName " + name);
 //        Optional<User> optionalUser = userRepository.findById(1);
@@ -89,6 +98,11 @@ public class UserService {
         return optionalUser.orElseThrow(() -> new UserNotFoundException());
     }
 
+    /**
+     * Сохраняет аватар текущего пользователя
+     *
+     * @param file аватар {@link MultipartFile}
+     */
     public void setAvatar(MultipartFile file, Authentication authentication) {
         log.info("setAvatar");
         boolean isAuthorized = authService.isAuthorized(authentication);
@@ -105,6 +119,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Возвращает аватар пользователя
+     *
+     * @param name логин пользователя {@link String}
+     * @return аватар в двоичном формате
+     */
     public byte[] getAvatar(String name) {
         log.info("getAvatar " + name);
         Optional<User> optionalUser = userRepository.findFirstByUsername(name);
@@ -112,6 +132,12 @@ public class UserService {
         return user.getAvatar();
     }
 
+    /**
+     * Возвращает аватар пользователя
+     *
+     * @param id первичный ключ пользователя {@link int}
+     * @return аватар в двоичном формате
+     */
     public byte[] getAvatar(int id) {
         log.info("getAvatar " + id);
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());

@@ -8,14 +8,37 @@ import java.util.Objects;
 @Entity()
 @Table(name = "ads")
 public class Ad {
+    /**
+     * Первичный ключ объявления
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    /**
+     * Название объявления
+     */
     private String title;
+
+    /**
+     * Описание объявления
+     */
     private String description;
+
+    /**
+     * Цена товара
+     */
     private int price;
+
+    /**
+     * Пользователь оставивший объявление
+     */
     @ManyToOne
     private User user;
+
+    /**
+     * Картинка объявления
+     */
     private  byte[] image;
 
     public Ad() {

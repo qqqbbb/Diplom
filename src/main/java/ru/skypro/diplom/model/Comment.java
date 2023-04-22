@@ -1,5 +1,6 @@
 package ru.skypro.diplom.model;
 
+import ru.skypro.diplom.DTO.CommentDTO;
 import ru.skypro.diplom.Exceptions.*;
 
 import javax.persistence.*;
@@ -11,13 +12,32 @@ import java.util.Objects;
 @Table(name = "Comments")
 public class Comment {
 
+    /**
+     * Первичный ключ комментария
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    /**
+     * дата и время создания комментария {@link LocalDateTime}
+     */
     private LocalDateTime creationDate;
+
+    /**
+     * текст комментария {@link String}
+     */
     private String text;
+
+    /**
+     * пользователь оставивший комментарий {@link User}
+     */
     @ManyToOne
     private User user;
+
+    /**
+     * объявление под которым оствили комментарий {@link Ad}
+     */
     @ManyToOne
     private Ad ad;
 
@@ -55,7 +75,7 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id && creationDate.equals(comment.creationDate) && text.equals(comment.text) && user.equals(comment.user) && ad.equals(comment.ad);
+        return id == comment.id && user.equals(comment.user) && ad.equals(comment.ad);
     }
 
     @Override

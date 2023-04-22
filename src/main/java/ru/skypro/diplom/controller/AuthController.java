@@ -41,10 +41,10 @@ public class AuthController {
     }
 
     /**
-     * Метод для регистрации нового пользователя
+     * регистрация нового пользователя
      *
-     * @param req дто-объект, содержащий данные о новом пользователе
-     * @return код 201 - если пользователь был создан
+     * @param req дто-объект, содержащий данные о новом пользователе  {@link RegisterReq}
+     * @return код 201 если пользователь был создан, код 403 если нет
      */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {

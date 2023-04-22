@@ -17,9 +17,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebSecurityConfig {
 
-//    private final AuthService authService;
-//private String currentUserName;
-//private final UserDetailsManager manager;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 
@@ -44,21 +41,6 @@ public class WebSecurityConfig {
 
         return new InMemoryUserDetailsManager(userDetails);
     }
-
-//    @Bean
-//    public JdbcUserDetailsManager userDetailsService() {
-//        log.info("userDetailsService");
-//        UserDetails userDetails = User.withDefaultPasswordEncoder()
-//                .username("user@gmail.com")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//
-//        if (currentUserName == null)
-//            log.info("userDetailsService currentUserName null");
-//
-//        return new JdbcUserDetailsManager(userDetails);
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

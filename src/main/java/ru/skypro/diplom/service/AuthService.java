@@ -28,10 +28,14 @@ public class AuthService {
         this.userDetailsManager = userDetailsManager;
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
-//        this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
     }
 
-
+    /**
+     * Логин-метод
+     *
+     * @param userName {@link String}
+     * @return - true если удачно, false если нет
+     */
     public boolean login(String userName, String password) {
         log.info("login " + userName);
         log.info("AuthService login userExists " + userDetailsManager.userExists(userName));
@@ -48,13 +52,15 @@ public class AuthService {
         return match;
     }
 
+    /**
+     * регистрация нового пользователя
+     *
+     * @param registerReq новый пользователь {@link RegisterReq}
+     * @return true
+     */
     public boolean register(RegisterReq registerReq) {
         log.info("register " + registerReq.getUsername() );
         userDetailsManager.deleteUser(registerReq.getUsername());
-//        if (userDetailsManager.userExists(registerReq.getUsername())) {
-//            log.info("register. User " + registerReq.getUsername() + " already resistered" );
-//            return false;
-//        }
         Role role = Role.USER;
         try{
             role = Role.valueOf(registerReq.getRole());
@@ -68,11 +74,15 @@ public class AuthService {
                         .roles(role.name())
                         .build()
         );
-//        userService.addUser(registerReq);
-
+        addUser(registerReq);
         return true;
     }
 
+    /**
+     * Сохраняет нового пользователя в БД
+     *
+     * @param registerReq новый пользователь {@link RegisterReq}
+     */
     public void addUser (RegisterReq registerReq){
         log.info("AddUser " + registerReq.getUsername());
         Optional<ru.skypro.diplom.model.User> optionalUser = userRepository.findFirstByUsername(registerReq.getUsername());
@@ -82,12 +92,24 @@ public class AuthService {
         }
     }
 
+    /**
+     * Изменяет пароль пользователя
+     *
+     * @param oldPassword текущий пароль {@link String}
+     * @param newPassword новый пароль {@link String}
+     */
     public void changePassword(String oldPassword, String newPassword, Authentication authentication) {
         log.info("changePassword " );
         isAuthorized(authentication);
         userDetailsManager.changePassword(oldPassword, newPassword);
     }
 
+    /**
+     * Проверка авторизации текущего пользователя
+     *
+     * @param user текущий пользователь {@link ru.skypro.diplom.model.User}
+     * @return true если авторизован {@link boolean}
+     */
     public boolean isAuthorized(ru.skypro.diplom.model.User user, Authentication authentication){
         log.info("isAuthorized " + user.getUsername() + " " + authentication.getName());
         if (!userDetailsManager.userExists(user.getUsername()))
@@ -119,6 +141,11 @@ public class AuthService {
         throw new NotAuthorizedUserActionException();
     }
 
+    /**
+     * Проверка авторизации текущего пользователя
+     *
+     * @return true если авторизован {@link boolean}
+     */
     public boolean isAuthorized(Authentication authentication){
         log.info("isAuthorized " + authentication.getName());
         if (!userDetailsManager.userExists(authentication.getName()))

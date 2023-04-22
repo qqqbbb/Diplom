@@ -33,11 +33,23 @@ public class AdService {
         this.commentRepository = commentRepository;
     }
 
+    /**
+     * Преобразует Ad в AdPreview
+     *
+     * @param ad объявление {@link Ad}
+     * @return DTO {@link AdPreview}
+     */
     public AdPreview adToDTO(Ad ad) {
         String image = "/ads/" + ad.getId() + "/image";
         return new AdPreview(ad.getId(), ad.getTitle(), ad.getUser().getId(), ad.getPrice(), image);
     }
 
+    /**
+     * Преобразует Ad в AdFull
+     *
+     * @param ad объявление {@link Ad}
+     * @return DTO {@link AdPreview}
+     */
     public AdFull adToFullDTO(Ad ad) {
         log.info("adToFullDTO");
         User user = ad.getUser();
@@ -46,6 +58,11 @@ public class AdService {
         return adFull;
     }
 
+    /**
+     * Возвращает все объявления
+     *
+     * @return  объявления {@link ResponseWrapperAds}
+     */
     public ResponseWrapperAds getAllAds() {
         log.info("getAllAds");
         List<Ad> ads = adRepository.findAll();
@@ -57,6 +74,13 @@ public class AdService {
         return new ResponseWrapperAds(adPreviews.size(), adPreviews);
     }
 
+    /**
+     * Создает и сохраняет новое объявление
+     *
+     * @param createAd  DTO объявление {@link CreateAd}
+     * @param file - картинка
+     * @return  DTO объявление {@link AdFull}
+     */
     public ResponseEntity addAd(CreateAd createAd, MultipartFile file, Authentication authentication) {
         log.info("addAd");
         boolean isAuthorized = authService.isAuthorized(authentication);
@@ -76,6 +100,12 @@ public class AdService {
         return ResponseEntity.status(HttpStatus.CREATED).body(adToDTO(ad));
     }
 
+    /**
+     * Сохраняет новую картинку для объявления
+     *
+     * @param ad - объявление {@link Ad}
+     * @param file - картинка
+     */
     public void setImage(Ad ad, MultipartFile file){
         log.info("setImage");
         try {
@@ -86,6 +116,13 @@ public class AdService {
         }
     }
 
+    /**
+     * Обновляет объявление
+     *
+     * @param createAd - DTO  {@link CreateAd}
+     * @param id - первичный ключ объявления
+     * @return  DTO {@link AdPreview}
+     */
     public AdPreview updateAd(CreateAd createAd, int id, Authentication authentication) {
         log.info("updateAd");
         Ad ad = adRepository.findById(id).orElseThrow(() -> new AdNotFoundException());
@@ -98,6 +135,12 @@ public class AdService {
         return adToDTO(ad);
     }
 
+    /**
+     * Возвращает DTO объявления
+     *
+     * @param id - первичный ключ объявления
+     * @return  DTO {@link AdFull}
+     */
     public AdFull getAd(int id) {
         log.info("getAd " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
@@ -105,6 +148,11 @@ public class AdService {
         return adToFullDTO(ad);
     }
 
+    /**
+     * Удаляет объявление
+     *
+     * @param id - первичный ключ объявления
+     */
     @Transactional
     public void deleteAd(int id, Authentication authentication) {
         log.info("deleteAd " + id);
@@ -116,6 +164,11 @@ public class AdService {
         adRepository.deleteById(id);
     }
 
+    /**
+     * Возвращает все объявления текущего пользователя
+     *
+     * @return  DTO объявления {@link ResponseWrapperAds}
+     */
     public ResponseWrapperAds getCurrentUserAds(Authentication authentication) {
         log.info("getCurrentUserAds ");
         authService.isAuthorized(authentication);
@@ -128,6 +181,13 @@ public class AdService {
         return new ResponseWrapperAds(ads.size(), adPreviews);
     }
 
+    /**
+     * Обновляет картинку объявления
+     *
+     * @param adId - первичный ключ объявления
+     * @param file - картинка {@link MultipartFile}
+     * @return  Обновленная картинка в двоичном формате
+     */
     public byte[] updateAdImage(int adId, MultipartFile file, Authentication authentication) {
         log.info("updateAdImage ");
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException());
@@ -138,6 +198,12 @@ public class AdService {
         return ad.getImage();
     }
 
+    /**
+     * Возвращает картинку объявления
+     *
+     * @param id - первичный ключ объявления
+     * @return  картинка в двоичном формате
+     */
     public ResponseEntity<byte[]> getImage(int id) {
         log.info("getImage " + id);
         Optional<Ad> optionalAd = adRepository.findById(id);
