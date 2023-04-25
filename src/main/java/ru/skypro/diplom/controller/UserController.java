@@ -27,7 +27,7 @@ public class UserController {
     /**
      * Метод для смены пароля текущего пользователя
      *
-     * @param newPassword дто-объект, содержащий старый и новый пароли
+     * @param newPassword дто-объект, содержащий старый и новый пароли {@link NewPassword}
      * @return код 200 - при удачном изменении пароля, код 403 - при введении неверного текущего пароля
      */
     @PostMapping("/set_password")
@@ -57,7 +57,7 @@ public class UserController {
     /**
      * Метод обновляет данные пользователя
      *
-     * @param userDTO     дто-объект, содержащий данные для обновления пользователя
+     * @param userDTO     дто-объект, содержащий данные для обновления пользователя {@link UserDTO}
      * @return данные о пользователе в виде дто-объекта {@link UserDTO}
      */
     @PatchMapping ("/me")
@@ -90,6 +90,12 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Метод возвращает аватар текущего пользователя
+     *
+     * @param id первичный ключ пользователя
+     * @return бинарные данные аватара пользователя
+     */
     @GetMapping(value ="/me/avatar", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getAvatar(Authentication authentication) {
         log.info("getAvatar " );

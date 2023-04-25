@@ -24,7 +24,7 @@ public class AdsController {
     /**
      * Сохраняет объявление вместе с картинкой
      *
-     * @param createAd   текстовые данные объявления
+     * @param createAd   текстовые данные объявления  {@link CreateAd}
      * @param file       картинка объявления в виде {@link MultipartFile}
      * @return данные о добавленном объявлении
      */
@@ -74,8 +74,8 @@ public class AdsController {
     /**
      * Обновляет объявление
      *
-     * @param id        первичный ключ объявления
-     * @param createAd текстовая информация обновления
+     * @param id  первичный ключ объявления
+     * @param createAd обновление {@link CreateAd}
      * @return обновленное объявление в виде дто-объекта {@link AdPreview}
      */
     @PatchMapping("/{id}")
@@ -86,7 +86,7 @@ public class AdsController {
     }
 
     /**
-     * Получает данные об объявлениях пользователя
+     * Получает данные об объявлениях текущего пользователя
      *
      * @return данные об объявлениях пользователя в виде дто-объекта {@link ResponseWrapperAds}
      */
@@ -97,10 +97,10 @@ public class AdsController {
     }
 
     /**
-     * Метод возвращает картинку объявления
+     * возвращает картинку объявления
      *
      * @param id первичный ключ объявления
-     * @return бинарные данные картинки объявления
+     * @return двоичные данные картинки объявления
      */
     @GetMapping(value ="/{id}/image", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getAdImage(@PathVariable int id) {
@@ -112,8 +112,8 @@ public class AdsController {
      * Обновляет картинку объявления
      *
      * @param id    первичный ключ объявления
-     * @param file новая картинка
-     * @return добавленная картинка в виде {@link ResponseEntity}
+     * @param file новая картинка {@link MultipartFile}
+     * @return добавленная картинка в двоичном виде
      */
     @PatchMapping(value ="/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> updateImage(@PathVariable int id, @RequestPart(value = "image") MultipartFile file, Authentication authentication) {
@@ -123,9 +123,9 @@ public class AdsController {
     }
 
     /**
-     * Метод для получения комментариев по ид объявления
+     * Метод для получения комментариев по первичному ключу объявления
      *
-     * @param id идентификатор объявления
+     * @param id первичный ключ объявления
      * @return дто-объект содержащий все комментарии объявления {@link ResponseWrapperComment}
      */
     @GetMapping("/{id}/comments")
@@ -137,8 +137,8 @@ public class AdsController {
     /**
      * Метод для создания комментария
      *
-     * @param id        идентификатор объявления
-     * @param commentDTO     дто-объект, содержащий данные для создания комментария
+     * @param id        первичный ключ объявления
+     * @param commentDTO     дто-объект, содержащий данные для создания комментария {@link CommentDTO}
      * @return данные о созданном комментарии в виде дто-объекта {@link CommentDTO}
      */
     @PostMapping("/{id}/comments")
@@ -148,11 +148,11 @@ public class AdsController {
     }
 
     /**
-     * Метод для удаления комментария по его ид
+     * Метод для удаления комментария по его первичному ключу
      *
-     * @param adId        идентификатор объявления
-     * @param commentId          идентификатор комментария
-     * @return код 200 - если объект успешно удален или не существовал
+     * @param adId         первичный ключ объявления
+     * @param commentId       первичный ключ комментария
+     * @return код 200 если объект успешно удален или не существовал
      */
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @PathVariable int adId, Authentication authentication) {
@@ -162,11 +162,11 @@ public class AdsController {
     }
 
     /**
-     * Метод для изменения комментария по его ид
+     * Метод для изменения комментария по его первичному ключу
      *
-     * @param adId        идентификатор объявления
-     * @param commentId          идентификатор комментария
-     * @param commentDTO     дто-объект содержащий данные о обновленном комментарии
+     * @param adId        первичный ключ объявления
+     * @param commentId           первичный ключ комментария
+     * @param commentDTO     дто-объект содержащий данные о обновленном комментарии  {@link CommentDTO}
      * @return данные о обновленном комментарии в виде дто-объекта {@link CommentDTO}
      */
     @PatchMapping("/{adId}/comments/{commentId}")
